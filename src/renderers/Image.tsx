@@ -12,6 +12,8 @@ export const renderer: Renderer = ({ story, action, isPaused, config }) => {
     ...(storyStyles || {}),
   };
 
+  console.log({story})
+
   const imageLoaded = () => {
     setLoaded(true);
     action("play");
@@ -19,7 +21,7 @@ export const renderer: Renderer = ({ story, action, isPaused, config }) => {
   return (
     <WithHeader {...{ story, globalHeader: config.header }}>
       <WithSeeMore {...{ story, action }}>
-        <div>
+        <div style={{width: '100%', height:'100%', objectFit: 'cover'}}>
           <img style={computedStyles} src={story.url} onLoad={imageLoaded} />
           {!loaded && (
             <div
@@ -30,7 +32,6 @@ export const renderer: Renderer = ({ story, action, isPaused, config }) => {
                 left: 0,
                 top: 0,
                 background: "rgba(0, 0, 0, 0.9)",
-                zIndex: 9,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -51,9 +52,11 @@ const styles = {
     display: "flex",
     position: "relative",
     overflow: "hidden",
+    objectFit: 'cover'
   },
   storyContent: {
-    width: "auto",
+    width: "100%",
+    height: '100%',
     maxWidth: "100%",
     maxHeight: "100%",
     margin: "auto",

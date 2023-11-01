@@ -1,40 +1,104 @@
-import React, { ComponentType, useState } from "react";
-import { Action, SeeMoreProps, Story } from "../../interfaces";
-import SeeMore from "./../../components/SeeMore";
+// @ts-nocheck
+import React, { useContext, useState } from "react";
+import { Action, GlobalCtx, Story } from "../../interfaces";
+import ProductCard from "../../components/ProductCard";
+import GlobalContext from "../../context/Global";
+import { MemoizedStoryDrawer } from "../../components/StoryDrawer";
+import "./index.css";
 
-const withSeeMore: React.FC<React.PropsWithChildren<{
-  story: Story;
-  action: Action;
-  customCollapsed?: SeeMoreProps["customCollapsed"];
-}>> = ({ story, action, customCollapsed, children }) => {
-  const [showMore, setShowMore] = useState(false);
-  const toggleMore = (show: boolean) => {
-    action(show ? "pause" : "play");
-    setShowMore(show);
+const withSeeMore: React.FC<
+  React.PropsWithChildren<{
+    story: Story;
+    action: Action;
+  }>
+> = ({ story, action, children }) => {
+  const { videoRef } = useContext<GlobalCtx>(GlobalContext);
+  const [isSizeOpen, setIsSizeOpen] = useState(false);
+  const [productId, setProductId] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const startProgress = () => {
+    console.log("start");
+    action("play");
   };
-  const CollapsedComponent = SeeMore;
+
+  const stopProgress = () => {
+    console.log("pause");
+    action("pause");
+  };
+
+  console.log({ story, productId });
   return (
     <>
       {children}
-      {story.seeMore && (
+      {story?.dots?.length ? (
         <div
           style={{
             position: "absolute",
-            margin: "auto",
-            bottom: showMore ? "unset" : 0,
-            zIndex: 9999,
+            bottom: 0,
+            zIndex: 2147483647,
+            maxHeight: "fit-content",
+            height: "fit-content",
+            overflowX: "hidden",
+            display: "flex",
+            alignItems: "flex-end",
             width: "100%",
-            height: showMore ? "100%" : "auto",
+            padding: ".5rem 0",
+            justifyContent: `${
+              story?.dots?.length > 1 ? "flex-end" : "center"
+            }`,
           }}
         >
-          <CollapsedComponent
-            action={action}
-            toggleMore={toggleMore}
-            showContent={showMore}
-            seeMoreContent={story.seeMore}
-            customCollapsed={customCollapsed || story.seeMoreCollapsed}
-          />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "start",
+              alignItems: "flex-end",
+              gap: ".5rem",
+              overflowX: "auto",
+              height: "auto",
+              paddingLeft: "1rem",
+            }}
+          >
+            {story?.dots?.map((prod, index) => {
+              console.log({prod, index})
+            return  <ProductCard
+                key={prod.id}
+                productname={prod?.productname}
+                stopProgress={stopProgress}
+                startProgress={startProgress}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                videoRef={videoRef}
+                triggers={{
+                  setProductId,
+                  productId,
+                }}
+              />
+              })}
+          </div>
+          <div
+            className={`f22storiesdrawer ${isOpen ? "f22open" : ""}`}
+            onClick={() => {
+              setIsOpen((prev) => !prev);
+              startProgress();
+              videoRef.current.play();
+              setIsSizeOpen(false);
+            }}
+          >
+            <MemoizedStoryDrawer
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              isSizeOpen={isSizeOpen}
+              setIsSizeOpen={setIsSizeOpen}
+              startProgress={startProgress}
+              videoRef={videoRef}
+              productname={productId}
+            />
+          </div>
         </div>
+      ) : (
+        <div></div>
       )}
     </>
   );

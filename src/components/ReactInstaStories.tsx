@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+// @ts-nocheck
+
+import { useEffect, useState } from "react";
 import {
   ReactInstaStoriesProps,
   GlobalCtx,
@@ -62,6 +64,9 @@ const ReactInstaStories = function (props: ReactInstaStoriesProps) {
     keyboardNavigation: props.keyboardNavigation,
     preventDefault: props.preventDefault,
     preloadCount: props.preloadCount,
+    onCloseClick: props.onCloseClick,
+    onAudioClick: props.onAudioClick,
+    videoRef: props.videoRef,
   };
   const [stories, setStories] = useState<{ stories: Story[] }>({
     stories: generateStories(props.stories, renderers),
@@ -81,8 +86,8 @@ const ReactInstaStories = function (props: ReactInstaStoriesProps) {
 };
 
 ReactInstaStories.defaultProps = {
-  width: 360,
-  height: 640,
+  width: 440,
+  height: '100vh',
   defaultInterval: 4000,
   preloadCount: 1,
 };

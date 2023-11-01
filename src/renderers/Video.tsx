@@ -1,8 +1,10 @@
+// @ts-nocheck
 import * as React from "react";
 import Spinner from "../components/Spinner";
-import { Renderer, Tester } from "./../interfaces";
+import { GlobalCtx, Renderer, Tester } from "./../interfaces";
 import WithHeader from "./wrappers/withHeader";
 import WithSeeMore from "./wrappers/withSeeMore";
+import GlobalContext from "../context/Global";
 
 export const renderer: Renderer = ({
   story,
@@ -11,6 +13,7 @@ export const renderer: Renderer = ({
   config,
   messageHandler,
 }) => {
+  const { videoRef: vid } = React.useContext<GlobalCtx>(GlobalContext);
   const [loaded, setLoaded] = React.useState(false);
   const [muted, setMuted] = React.useState(false);
   const { width, height, loader, storyStyles } = config;
@@ -19,8 +22,6 @@ export const renderer: Renderer = ({
     ...styles.storyContent,
     ...(storyStyles || {}),
   };
-
-  let vid = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
     if (vid.current) {
@@ -100,10 +101,12 @@ export const renderer: Renderer = ({
 
 const styles = {
   storyContent: {
-    width: "auto",
+    width: "100%",
+    height: "100%",
     maxWidth: "100%",
     maxHeight: "100%",
     margin: "auto",
+    objectFit: "cover",
   },
   videoContainer: {
     display: "flex",

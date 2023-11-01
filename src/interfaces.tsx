@@ -142,7 +142,8 @@ export interface SeeMoreProps {
 export interface HeaderProps {
   profileImage: string;
   heading: string;
-  subheading: string;
+  onCloseClick: Function;
+  onAudioClick: Function
 }
 
 export interface ProgressProps {

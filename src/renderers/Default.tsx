@@ -18,7 +18,7 @@ const styles = {
     width: "100%",
     maxHeight: "100%",
     margin: "auto",
-  },
+  },  
   text: {
     textAlign: "center" as "center",
     color: "white",

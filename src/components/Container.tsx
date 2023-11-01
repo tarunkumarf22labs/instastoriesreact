@@ -138,6 +138,7 @@ export default function () {
   const mouseUp =
     (type: string) => (e: React.MouseEvent | React.TouchEvent) => {
       e.preventDefault();
+      e.stopPropagation()
       mousedownId.current && clearTimeout(mousedownId.current);
       if (pause) {
         toggleState("play");
@@ -149,6 +150,7 @@ export default function () {
   const getVideoDuration = (duration: number) => {
     setVideoDuration(duration * 1000);
   };
+  
 
   return (
     <div
@@ -179,14 +181,14 @@ export default function () {
       {!preventDefault && (
         <div style={styles.overlay}>
           <div
-            style={{ width: "50%", zIndex: 999 }}
+            style={{ width: "50%"}}
             onTouchStart={debouncePause}
             onTouchEnd={mouseUp("previous")}
             onMouseDown={debouncePause}
             onMouseUp={mouseUp("previous")}
           />
           <div
-            style={{ width: "50%", zIndex: 999 }}
+            style={{ width: "50%"}}
             onTouchStart={debouncePause}
             onTouchEnd={mouseUp("next")}
             onMouseDown={debouncePause}

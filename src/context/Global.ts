@@ -3,8 +3,8 @@ import { GlobalCtx } from '../interfaces';
 
 export const initialContext = {
 	defaultInterval: 4000,
-	width: 360,
-	height: 640,
+	width: 440,
+	height: '100vh',
 };
 
 const GlobalContext = React.createContext<GlobalCtx>(initialContext);
