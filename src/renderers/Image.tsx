@@ -12,8 +12,6 @@ export const renderer: Renderer = ({ story, action, isPaused, config }) => {
     ...(storyStyles || {}),
   };
 
-  console.log({story})
-
   const imageLoaded = () => {
     setLoaded(true);
     action("play");

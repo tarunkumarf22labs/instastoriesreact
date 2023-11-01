@@ -1,0 +1,11 @@
+@media screen and (max-width: 440px) {
+    .myStoriesContainer{
+        justify-content: flex-start !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .myStoriesContainer{
+        justify-content: flex-start !important;
+    }
+}

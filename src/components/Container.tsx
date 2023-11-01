@@ -181,14 +181,14 @@ export default function () {
       {!preventDefault && (
         <div style={styles.overlay}>
           <div
-            style={{ width: "50%"}}
+            style={{ width: "50%", display:'block'}}
             onTouchStart={debouncePause}
             onTouchEnd={mouseUp("previous")}
             onMouseDown={debouncePause}
             onMouseUp={mouseUp("previous")}
           />
           <div
-            style={{ width: "50%"}}
+            style={{ width: "50%", display:'block'}}
             onTouchStart={debouncePause}
             onTouchEnd={mouseUp("next")}
             onMouseDown={debouncePause}

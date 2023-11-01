@@ -3,6 +3,8 @@
 import React, { isValidElement, useCallback, useEffect, useState } from "react";
 import Stories from "../components/ReactInstaStories";
 import { StoriesData } from "../interfaces";
+import { getClickdata } from "../hooks/firebase";
+import styles from './myStories.module.css'
 
 const generateStoriesData = (storiesData) =>
   storiesData.map(({ childstories }) =>
@@ -98,36 +100,44 @@ const MyStories = (props) => {
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          gap: "10px",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          overflowX: "scroll",
-          width: "100%",
-          padding: "0 1rem",
-        }}
-      >
-        {props?.storesData.map((item, index) => (
-          <img
-            src={item?.image}
-            key={index}
-            style={{
-              width: "100px",
-              height: "100px",
-              objectFit: "cover",
-              borderRadius: "50%",
-              flexShrink: 0,
-              margin: "1rem 0",
-            }}
-            loading="eager"
-            onClick={() => {
-              onSpecificStoriesClick(index, item);
-            }}
-          />
-        ))}
-      </div>
+      {
+        <div
+        className={styles.myStoriesContainer}
+          style={{
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+            justifyContent: `${
+              props?.storesData?.length > 10 ? "flex-start" : "center"
+            }`,
+            overflowX: "scroll",
+            width: "100%",
+            padding: "0 1rem",
+          }}
+        >
+          {props?.storesData.map((item, index) => (
+            <img
+              src={item?.image}
+              key={index}
+              style={{
+                width: "100px",
+                height: "100px",
+                objectFit: "cover",
+                borderRadius: "50%",
+                flexShrink: 0,
+                margin: "1rem 0",
+                border: "2px solid black",
+                padding: "2px",
+              }}
+              loading="eager"
+              onClick={() => {
+                getClickdata("VIEWS");
+                onSpecificStoriesClick(index, item);
+              }}
+            />
+          ))}
+        </div>
+      }
       {/*// renderer  props pattern 
           // create a object to  */}
       {showStories && (

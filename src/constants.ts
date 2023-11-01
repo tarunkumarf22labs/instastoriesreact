@@ -1,0 +1,1 @@
+export const URL = `https://${window?.Shopify?.shop}`

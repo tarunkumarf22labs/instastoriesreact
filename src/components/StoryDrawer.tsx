@@ -6,6 +6,7 @@ import { memo } from "react";
 import PoweredBy from "./PoweredBy";
 import Loader from "./Loader";
 import { getClickdata } from "../hooks/firebase";
+import { URL } from "../constants";
 
 function StoryDrawer({
   setIsOpen,
@@ -19,11 +20,6 @@ function StoryDrawer({
   productname: string;
 }) {
   function handledata({product}) {
-    console.log({
-      title: product.title,
-      variants: product.variants,
-      images: product.images
-    })
     return {
       title: product.title,
       variants: product.variants,
@@ -39,7 +35,7 @@ function StoryDrawer({
     async function fetchData() {
       try {
         const data = await fetch(
-          `${import.meta.env.VITE_URL}/products/${productname}.json`,
+          `${URL}/products/${productname}.json`,
           { redirect: "follow", signal: Abortcontoller.signal }
         );
         const value = await data.json();
@@ -60,7 +56,7 @@ function StoryDrawer({
   const handleAddToCart = () => {
     setTextforCart(<Loader/>)
     
-    const url = `${import.meta.env.VITE_URL}/cart/add`;
+    const url = `${URL}/cart/add`;
 
     const requestBody = {
       Style: "Limited-2",
@@ -137,7 +133,7 @@ function StoryDrawer({
               {textforCart}
             </button>
             <a
-              href={`${import.meta.env.VITE_URL}/cart/${variant.id}:1?checkout`}
+              href={`${URL}/cart/${variant.id}:1?checkout`}
               className="atc_button"
               onClick={() => {
                 getClickdata("BUYNOW");

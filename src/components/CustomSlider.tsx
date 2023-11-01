@@ -1,8 +1,9 @@
 // @ts-nocheck
-import "./customSlider.css";
 import { useEffect, useState } from "react";
 import { ImageElement } from "../types";
 import { getClickdata } from "../hooks/firebase";
+import { URL } from "../constants";
+import styles from "./customSlider.module.css";
 
 function Customslider({
   productimages,
@@ -19,7 +20,6 @@ function Customslider({
 }: {
   productimages: ImageElement[];
 }) {
-  console.log("custom slide")
   const [slides, setSlides] = useState({
     currentImg: productimages[0]?.src,
     currentImgIndex: 0,
@@ -44,10 +44,10 @@ function Customslider({
   };
 
   return (
-    <div className="custom-slider-container">
-      <div className="nav-icons">
+    <div className={styles.customSliderContainer}>
+      <div className={styles.navIcons}>
         <a
-          href={`${import.meta.env.VITE_URL}/products/${productName}`}
+          href={`${URL}/products/${productName}`}
           target="__blank"
           onClick={() => getClickdata("VIEW_PRODUCT")}
         >
@@ -83,12 +83,15 @@ function Customslider({
           />
         </svg>
       </div>
-      <div className="prod-desc">
-        <div className="prod-info">
-          <a href={`${import.meta.env.VITE_URL}/products/${productName}`}
-           onClick={()=> getClickdata("VIEW_PRODUCT")}
-           >
-            <h5 style={{ fontSize: "14px", marginBottom: ".5rem", width: '80%' }}>
+      <div className={styles.prodDesc}>
+        <div className={styles.prodInfo}>
+          <a
+            href={`${URL}/products/${productName}`}
+            onClick={() => getClickdata("VIEW_PRODUCT")}
+          >
+            <h5
+              style={{ fontSize: "14px", marginBottom: ".5rem", width: "80%" }}
+            >
               {productTitle}
             </h5>
           </a>
@@ -102,38 +105,42 @@ function Customslider({
         </div>
       </div>
 
-      <div id="main__container">
-        <a href={`${import.meta.env.VITE_URL}/products/${productName}`} style={{textDecoration: "none"}} 
-        onClick={()=> getClickdata("VIEW_PRODUCT")}
+      <div id={styles.mainContainer}>
+        <a
+          href={`${URL}/products/${productName}`}
+          style={{ textDecoration: "none" }}
+          onClick={() => getClickdata("VIEW_PRODUCT")}
         >
-          <div className="prod-images">
+          <div className={styles.prodImages}>
             {slides.imgData.map((prod) => (
-              <div className="prod-image">
-                <img src={prod.src} alt={prod.title} style={{maxWidth: "fit-content !important"}} loading="eager"/>
+              <div className={styles.prodImage}>
+                <img
+                  src={prod.src}
+                  alt={prod.title}
+                  style={{ maxWidth: "fit-content !important" }}
+                  loading="eager"
+                />
               </div>
             ))}
           </div>
         </a>
       </div>
       {slides.sizeData.length > 1 && (
-        <div className="all__slides__container">
-          <div className="all_slides">
-            <div className="slider__container">
+        <div className={styles.allSlidesContainer}>
+          <div className={styles.allSlides}>
+            <div className={styles.sliderContainer}>
               {slides.sizeData &&
                 slides.sizeData.map((slide, index) => (
                   <div
                     key={slide.id}
-                    className={`slide__container ${
-                      slides.currentSizeIndex === index ? "active__size" : ""
+                    className={`${styles.slideContainer} ${
+                      slides.currentSizeIndex === index
+                        ? styles.activeSize
+                        : styles.notActive
                     }`}
                     onClick={() => onSliderSizeClick(index)}
-                    style={{
-                      color: `${
-                        slides.currentSizeIndex === index ? "#fff" : "#000"
-                      }`,
-                    }}
                   >
-                    <h6 className="size__text">{slide?.title}</h6>
+                    <span className={styles.sizeText}>{slide?.title}</span>
                   </div>
                 ))}
             </div>

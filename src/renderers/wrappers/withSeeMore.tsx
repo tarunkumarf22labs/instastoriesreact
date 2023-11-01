@@ -18,16 +18,13 @@ const withSeeMore: React.FC<
   const [isOpen, setIsOpen] = useState(false);
 
   const startProgress = () => {
-    console.log("start");
     action("play");
   };
 
   const stopProgress = () => {
-    console.log("pause");
     action("pause");
   };
 
-  console.log({ story, productId });
   return (
     <>
       {children}
@@ -60,11 +57,10 @@ const withSeeMore: React.FC<
               paddingLeft: "1rem",
             }}
           >
-            {story?.dots?.map((prod, index) => {
-              console.log({prod, index})
-            return  <ProductCard
-                key={prod.id}
-                productname={prod?.productname}
+            {story?.dots?.map((prod, index) => (
+              <ProductCard
+                key={index}
+                productname={prod?.productname.trim()}
                 stopProgress={stopProgress}
                 startProgress={startProgress}
                 isOpen={isOpen}
@@ -75,7 +71,7 @@ const withSeeMore: React.FC<
                   productId,
                 }}
               />
-              })}
+            ))}
           </div>
           <div
             className={`f22storiesdrawer ${isOpen ? "f22open" : ""}`}

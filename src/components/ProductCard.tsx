@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import { getClickdata } from "../hooks/firebase";
 import styles from "./productCard.module.css";
+import { URL } from "../constants";
 
 type Props = {
   productname: string;
@@ -24,11 +25,6 @@ const ProductCard = ({
   const [textforCart, setTextforCart] = useState("Add to cart");
 
   function handledata({product}) {
-    console.log({
-      title: product.title,
-      variants: product.variants,
-      images: product.images
-    })
     return {
       title: product.title,
       variants: product.variants,
@@ -40,10 +36,9 @@ const ProductCard = ({
     async function fetchData() {
       try {
         const data = await fetch(
-          `${import.meta.env.VITE_URL}/products/${productname}.json`,
+          `${URL}/products/${productname}.json`,
           { redirect: "follow", signal: Abortcontoller.signal }
         );
-
         const value = await data.json();
         const relevantData = handledata(value);
         setProduct(relevantData);
@@ -69,8 +64,8 @@ const ProductCard = ({
     setIsVariantSelectorOpen(true);
   };
   const handleOpenProductDetails = () => {
-    console.log("clicked handle");
-    triggers.setProductId(productname);
+    
+    triggers.setProductId(productname.trim());
     setIsOpen((prev) => !prev);
     stopProgress();
     videoRef.current.pause();
@@ -78,7 +73,7 @@ const ProductCard = ({
   const handleAddToCart = () => {
     // Define the URL
 
-    const url = `${import.meta.env.VITE_URL}/cart/add`;
+    const url = `${URL}/cart/add`;
 
     setTextforCart(<Loader />);
 
@@ -116,7 +111,6 @@ const ProductCard = ({
       })
       .then((data) => {
         // Handle the response data here
-        console.log(data);
         setTextforCart("Added To Cart");
       })
       .catch((error) => {
@@ -132,6 +126,12 @@ const ProductCard = ({
       startProgress();
     }
   }
+
+  const getContentString = (title) => {
+    if(title?.length > 30 ) return title?.substring(0, 30) + "...";
+    return title; 
+  }
+
   return (
     <div
       onClick={() => handleOverlayClick()}
@@ -140,7 +140,7 @@ const ProductCard = ({
       <div className={styles.productCard}>
         <div className={styles.productCardContent}>
           <div
-            className={styles.productCardImage}
+            className={styles.productCardImg}
             onMouseEnter={() => triggers.setProductId(productname)}
             onClick={() => {
               handleOpenProductDetails();
@@ -151,7 +151,7 @@ const ProductCard = ({
               src={product?.images[0].src}
               alt={product?.title}
               loading="eager"
-              style={{ width: "100%", height: "100%" }}
+              style={{ width: "100px", height: "100px", borderRadius:'5px' }}
             />
           </div>
           <div
@@ -163,13 +163,14 @@ const ProductCard = ({
             }}
           >
             <span className={styles.productCardInfoTitle}>
-              {product?.title}
+              {getContentString(product?.title)}
             </span>
             <span className={styles.productCardInfoPrice}>
               Rs.{product?.variants[0].price}
             </span>
           </div>
-          {product?.variants?.length > 1 && (
+        </div>
+        {product?.variants?.length > 1 && (
             <div
               className={`${styles.productCardVariants} ${
                 isVariantSelectorOpen ? styles.productVariantOpen : ""
@@ -189,7 +190,6 @@ const ProductCard = ({
               ))}
             </div>
           )}
-        </div>
         {isVariantSelectorOpen || product?.variants?.length < 2 ? (
           <button
             onClick={() => {
