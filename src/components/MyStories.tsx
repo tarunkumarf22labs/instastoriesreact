@@ -4,7 +4,8 @@ import React, { isValidElement, useCallback, useEffect, useState } from "react";
 import Stories from "../components/ReactInstaStories";
 import { StoriesData } from "../interfaces";
 import { getClickdata } from "../hooks/firebase";
-import styles from './myStories.module.css'
+import styles from "./myStories.module.css";
+import { useWindowWidth } from "../hooks/useWindowSize";
 
 const generateStoriesData = (storiesData) =>
   storiesData.map(({ childstories }) =>
@@ -36,6 +37,8 @@ const MyStories = (props) => {
     },
     [showStories]
   );
+
+  const isSizeGreaterThan440 = useWindowWidth();
 
   const onPreviousBtnClick = useCallback(
     (currentStoryIndex) => {
@@ -102,7 +105,7 @@ const MyStories = (props) => {
     <>
       {
         <div
-        className={styles.myStoriesContainer}
+          className={styles.myStoriesContainer}
           style={{
             display: "flex",
             gap: "10px",
@@ -115,27 +118,56 @@ const MyStories = (props) => {
             padding: "0 1rem",
           }}
         >
-          {props?.storesData.map((item, index) => (
-            <img
-              src={item?.image}
-              key={index}
-              style={{
-                width: "100px",
-                height: "100px",
-                objectFit: "cover",
-                borderRadius: "50%",
-                flexShrink: 0,
-                margin: "1rem 0",
-                border: "2px solid black",
-                padding: "2px",
-              }}
-              loading="eager"
-              onClick={() => {
-                getClickdata("VIEWS");
-                onSpecificStoriesClick(index, item);
-              }}
-            />
-          ))}
+          {props?.storesData.map((item, index) => {
+
+            return (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{
+                  height: '100px',
+                  width: '100px',
+                  borderRadius: '50%',
+                  border: "2px solid #000000",
+
+                }}>
+                <img
+                  src={item?.image}
+                  key={index}
+                  style={{
+                    objectFit: "cover",
+                    padding: "2px",
+                    width:'100%',
+                    height: '100%',
+                    borderRadius: '50%'
+                  }}
+                  loading="eager"
+                  onClick={() => {
+                    getClickdata("VIEWS");
+                    onSpecificStoriesClick(index, item);
+                  }}
+                />
+                </div>
+                <span
+                  style={{
+                    fontSize: "10px",
+                    textOverflow: "ellipsis",
+                    width: "80px",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                     textAlign : "center"
+                  }}
+                >
+                  {item?.name}
+                </span>
+              </div>
+            );
+          })}
         </div>
       }
       {/*// renderer  props pattern 
@@ -169,6 +201,7 @@ const MyStories = (props) => {
             onAudioClick={onAudioClick}
             onCloseClick={onCloseClick}
             videoRef={videoRef}
+            width={isSizeGreaterThan440 ? '440px': '100%'}
           />
         </div>
       )}

@@ -19,6 +19,7 @@ function StoryDrawer({
   isOpen: boolean;
   productname: string;
 }) {
+  
   function handledata({product}) {
     return {
       title: product.title,
@@ -38,7 +39,7 @@ function StoryDrawer({
           `${URL}/products/${productname}.json`,
           { redirect: "follow", signal: Abortcontoller.signal }
         );
-        const value = await data.json();
+        const value = await data.json();        
         const relevantData = handledata(value);
         setProduct(relevantData);
         setVariant(relevantData?.variants[0]);

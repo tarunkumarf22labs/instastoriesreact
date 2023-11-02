@@ -4,6 +4,10 @@
     }
 }
 
+.myStoriesContainer::-webkit-scrollbar{
+    height: 0;
+}
+
 @media screen and (max-width: 768px) {
     .myStoriesContainer{
         justify-content: flex-start !important;

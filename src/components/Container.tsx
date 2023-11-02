@@ -157,7 +157,7 @@ export default function () {
       style={{
         ...styles.container,
         ...storyContainerStyles,
-        ...{ width, height },
+        ...{ width, height  , maxWidth:'440px'},
       }}
     >
       <ProgressContext.Provider

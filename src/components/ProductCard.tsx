@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import { getClickdata } from "../hooks/firebase";
 import styles from "./productCard.module.css";
-import { URL } from "../constants";
+import { URL, logoSrc } from "../constants";
 
 type Props = {
   productname: string;
@@ -24,26 +24,27 @@ const ProductCard = ({
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [textforCart, setTextforCart] = useState("Add to cart");
 
-  function handledata({product}) {
+  function handledata({ product }) {
     return {
       title: product.title,
       variants: product.variants,
-      images: product.images
+      images: product.images,
     };
   }
   useEffect(() => {
     const Abortcontoller = new AbortController();
     async function fetchData() {
       try {
-        const data = await fetch(
-          `${URL}/products/${productname}.json`,
-          { redirect: "follow", signal: Abortcontoller.signal }
-        );
+        const data = await fetch(`${URL}/products/${productname}.json`, {
+          redirect: "follow",
+          signal: Abortcontoller.signal,
+        });
         const value = await data.json();
         const relevantData = handledata(value);
         setProduct(relevantData);
         setVariant(relevantData?.variants[0].id);
       } catch (error) {
+        console.log({ productname });
         console.error("Error fetching data:", error);
       }
     }
@@ -57,14 +58,13 @@ const ProductCard = ({
   }, [productname]);
 
   const handleVariantSelection = (e, id, index) => {
-    e.stopPropagation()
+    e.stopPropagation();
     if (videoRef.current) videoRef.current.pause();
     setVariant(id);
     setSelectedVariantIndex(index);
     setIsVariantSelectorOpen(true);
   };
   const handleOpenProductDetails = () => {
-    
     triggers.setProductId(productname.trim());
     setIsOpen((prev) => !prev);
     stopProgress();
@@ -121,16 +121,16 @@ const ProductCard = ({
   };
 
   const handleOverlayClick = () => {
-    if(isVariantSelectorOpen) {
-      setIsVariantSelectorOpen(false)
+    if (isVariantSelectorOpen) {
+      setIsVariantSelectorOpen(false);
       startProgress();
     }
-  }
+  };
 
   const getContentString = (title) => {
-    if(title?.length > 30 ) return title?.substring(0, 30) + "...";
-    return title; 
-  }
+    if (title?.length > 30) return title?.substring(0, 30) + "...";
+    return title;
+  };
 
   return (
     <div
@@ -151,7 +151,7 @@ const ProductCard = ({
               src={product?.images[0].src}
               alt={product?.title}
               loading="eager"
-              style={{ width: "100px", height: "100px", borderRadius:'5px' }}
+              style={{ width: "100px", height: "100px", borderRadius: "5px" }}
             />
           </div>
           <div
@@ -171,25 +171,25 @@ const ProductCard = ({
           </div>
         </div>
         {product?.variants?.length > 1 && (
-            <div
-              className={`${styles.productCardVariants} ${
-                isVariantSelectorOpen ? styles.productVariantOpen : ""
-              }`}
-            >
-              {product?.variants?.map((variant, index) => (
-                <div
-                  className={`${styles.productCardVariant} ${
-                    selectedVariantIndex == index
-                      ? styles.productCardVariantActive
-                      : ""
-                  }`}
-                  onClick={(e) => handleVariantSelection(e, variant.id, index)}
-                >
-                  {variant?.title}
-                </div>
-              ))}
-            </div>
-          )}
+          <div
+            className={`${styles.productCardVariants} ${
+              isVariantSelectorOpen ? styles.productVariantOpen : ""
+            }`}
+          >
+            {product?.variants?.map((variant, index) => (
+              <div
+                className={`${styles.productCardVariant} ${
+                  selectedVariantIndex == index
+                    ? styles.productCardVariantActive
+                    : ""
+                }`}
+                onClick={(e) => handleVariantSelection(e, variant.id, index)}
+              >
+                {variant?.title}
+              </div>
+            ))}
+          </div>
+        )}
         {isVariantSelectorOpen || product?.variants?.length < 2 ? (
           <button
             onClick={() => {
@@ -212,10 +212,13 @@ const ProductCard = ({
             {textforCart}
           </button>
         )}
-        <div id={styles.poweredByProductCard}>
+        <div
+          id={styles.poweredByProductCard}
+          onClick={() => window.open("https://shopclips.app/", "_blank")}
+        >
           <span>
             Powered By{" "}
-            <svg
+            {/* <svg
               width="18"
               height="18"
               viewBox="0 0 15 14"
@@ -241,12 +244,16 @@ const ProductCard = ({
                 d="M7.92917 2.5L12.7186 9.30263L11.8765 10.5L9.74496 8.97368L7.0589 3.73948L7.92917 2.5Z"
                 fill="#272727"
               />
-            </svg>{" "}
-            F22 LABS
+            </svg> */}
+            <img
+              style={{ width: "15px", height: "15px" }}
+              src={logoSrc}
+              alt="logo"
+            />{" "}
+            Shopclips
           </span>
         </div>
-      </div>
-      //{" "}
+      </div>{" "}
     </div>
   );
 };

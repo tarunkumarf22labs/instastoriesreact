@@ -1,3 +1,5 @@
+import { logoSrc } from "../constants";
+
 type Props = {};
 
 const PoweredBy = (props: Props) => {
@@ -11,11 +13,12 @@ const PoweredBy = (props: Props) => {
         justifyContent: "center",
         marginBottom: "0.1rem",
         position: "absolute",
-        bottom: "6px",
+        // bottom: "6px",
         zIndex: 999,
         left: "50%",
         transform: "translateX(-50%)",
       }}
+      onClick={() => window.open("https://shopclips.app/", '_blank')}
     >
       <span
         style={{
@@ -30,7 +33,7 @@ const PoweredBy = (props: Props) => {
         }}
       >
         Powered By{" "}
-        <svg
+        {/* <svg
           width="18"
           height="18"
           viewBox="0 0 15 14"
@@ -60,8 +63,10 @@ const PoweredBy = (props: Props) => {
             d="M7.92917 2.5L12.7186 9.30263L11.8765 10.5L9.74496 8.97368L7.0589 3.73948L7.92917 2.5Z"
             fill="#272727"
           />
-        </svg>{" "}
-        F22 LABS
+        </svg> */}
+        <img style={{width: '15px', height: '15px'}} src={logoSrc} alt="logo" />
+        {" "}
+        Shopclips
       </span>
     </div>
   );

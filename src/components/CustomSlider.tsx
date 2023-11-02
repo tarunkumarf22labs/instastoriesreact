@@ -29,7 +29,6 @@ function Customslider({
     sizeData: productVariants,
     totalSlides: productimages.length,
   });
-
   const onSliderSizeClick = (index) => {
     const selectedSize = slides.sizeData[index];
 
@@ -42,7 +41,6 @@ function Customslider({
     });
     setIsSizeOpen(!isSizeOpen);
   };
-
   return (
     <div className={styles.customSliderContainer}>
       <div className={styles.navIcons}>
@@ -90,7 +88,7 @@ function Customslider({
             onClick={() => getClickdata("VIEW_PRODUCT")}
           >
             <h5
-              style={{ fontSize: "14px", marginBottom: ".5rem", width: "80%" }}
+              style={{ fontSize: "14px", marginBottom: ".5rem", width: "80%", color:'black' }}
             >
               {productTitle}
             </h5>
@@ -98,6 +96,7 @@ function Customslider({
           <h5
             style={{
               fontSize: "14px",
+              color:'black'
             }}
           >
             Rs. {productPrice}{" "}
@@ -112,8 +111,8 @@ function Customslider({
           onClick={() => getClickdata("VIEW_PRODUCT")}
         >
           <div className={styles.prodImages}>
-            {slides.imgData.map((prod) => (
-              <div className={styles.prodImage}>
+            {productimages.map((prod, index) => (
+              <div className={styles.prodImage} key={index}>
                 <img
                   src={prod.src}
                   alt={prod.title}

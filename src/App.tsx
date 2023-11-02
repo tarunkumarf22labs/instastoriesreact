@@ -19,8 +19,7 @@ function App() {
         requestOptions
       );
       const res = await data.json();
-      const vdata = res;
-      setData(vdata);
+      setData(res?.[window.location.pathname]);
     };
 
     fetchData();

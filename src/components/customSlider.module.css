@@ -160,7 +160,7 @@
 .prodImages::-webkit-scrollbar {
   height: 0;
 }
-.prod-image {
+.prodImage {
   height: 15.5rem;
   width: 10.3rem;
 }
@@ -169,6 +169,7 @@
   width: 10.3rem;
   height: 15.5rem;
   object-fit: cover;
+  max-width: fit-content !important;
 }
 .showMore {
   font-size: 0.9rem;
@@ -183,4 +184,5 @@
 }
 .sizeText{
   display: block;
+  font-size: 16px !important;
 }
