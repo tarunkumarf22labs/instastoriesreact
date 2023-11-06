@@ -1,0 +1,7 @@
+// Action Types
+export const SET_STORIES_DATA = "SET_STORIES_DATA";
+export const SHOW_STORIES = "SHOW_STORIES";
+export const HIDE_STORIES = "HIDE_STORIES";
+export const SET_ACTIVE_STORIES_INDEX = "SET_ACTIVE_STORIES_INDEX";
+export const TOGGLE_MUTE = "TOGGLE_MUTE";
+export const SET_ACTIVE_STORIES  = 'SET_ACTIVE_STORIES'
