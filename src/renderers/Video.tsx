@@ -102,16 +102,16 @@ export const renderer: Renderer = ({
 const styles = {
   storyContent: {
     width: "100%",
-    height: "100%",
     maxWidth: "100%",
     maxHeight: "100%",
     margin: "auto",
-    objectFit: "cover",
+    objectFit: "contain",
   },
   videoContainer: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    width: '100%'
   },
 };
 

@@ -6,12 +6,9 @@ import { resolve } from "path";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 
 // https://vitejs.dev/config/
-export default defineConfig(  ({mode}) => {
-  const env = loadEnv(mode, process.cwd(), '');
-  return {
-    define: {
-      'process.env.NODE_ENV': JSON.stringify("production")
-    },
+export default defineConfig( {
+  // const env = loadEnv(mode, process.cwd(), '');
+
     plugins: [react(), cssInjectedByJsPlugin()],
     build: {
       modulePreload: false,
@@ -23,7 +20,7 @@ export default defineConfig(  ({mode}) => {
         // the proper extensions will be added
         fileName: "f22",
       },
-    },
+
   } 
 
 });

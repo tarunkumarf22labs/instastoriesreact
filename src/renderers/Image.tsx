@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import * as React from "react";
 import Spinner from "../components/Spinner";
 import { Renderer, Tester } from "./../interfaces";
@@ -50,7 +52,6 @@ const styles = {
     display: "flex",
     position: "relative",
     overflow: "hidden",
-    objectFit: 'cover'
   },
   storyContent: {
     width: "100%",
@@ -58,6 +59,7 @@ const styles = {
     maxWidth: "100%",
     maxHeight: "100%",
     margin: "auto",
+    objectFit: 'contain'
   },
 };
 

@@ -7,6 +7,7 @@ import PoweredBy from "./PoweredBy";
 import Loader from "./Loader";
 import { getClickdata } from "../hooks/firebase";
 import { URL } from "../constants";
+import styles from "../styles/storyDrawer.module.css"
 
 function StoryDrawer({
   setIsOpen,
@@ -99,7 +100,7 @@ function StoryDrawer({
   };
   return (
     <div
-      className="plugin-inner_container"
+      className={styles.pluginInnerContainer}
       onClick={(e) => {
         e.stopPropagation();
       }}
@@ -109,7 +110,6 @@ function StoryDrawer({
           <CustomSlider
             productimages={product?.images}
             productName={productname}
-            // productDesc={product?.description}
             productTitle={product?.title}
             productPrice={variant?.price}
             productVariants={product?.variants}
@@ -121,21 +121,21 @@ function StoryDrawer({
             videoRef={videoRef}
           />
 
-          <div className="size_container">
+          <div className={styles.sizeContainer}>
             <button
               disabled={textforCart === "Add to cart" ? false : true}
               onClick={() => {
                 handleAddToCart();
                 getClickdata("ADD_TO_CART");
               }}
-              className="atc_button"
+              className={styles.atcButton}
               style={{ cursor: "pointer" }}
             >
               {textforCart}
             </button>
             <a
               href={`${URL}/cart/${variant.id}:1?checkout`}
-              className="atc_button"
+              className={styles.atcButton}
               onClick={() => {
                 getClickdata("BUYNOW");
               }}

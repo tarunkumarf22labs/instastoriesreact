@@ -7,11 +7,11 @@ const PoweredBy = (props: Props) => {
     <div
       style={{
         height: "22px",
-        margin: "0.3rem 0",
+        margin: "3pxx 0",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: "0.1rem",
+        marginBottom: "1px",
         position: "absolute",
         // bottom: "6px",
         zIndex: 999,
@@ -28,8 +28,8 @@ const PoweredBy = (props: Props) => {
           alignItems: "center",
           justifyContent: "center",
           gap: "5px",
-          padding: "0.2rem 0.6rem",
-          fontSize: ".5rem",
+          padding: "2px 6px",
+          fontSize: "5px",
         }}
       >
         Powered By{" "}

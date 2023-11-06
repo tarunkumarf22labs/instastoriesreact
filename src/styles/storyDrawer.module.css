@@ -1,0 +1,39 @@
+.pluginInnerContainer {
+  z-index: 2147483647;
+  height: fit-content;
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+  background: white;
+  padding: 10px 0;
+  padding-bottom: 25px;
+}
+
+.sizeContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.atcButton {
+  padding: 7px 10px;
+  width: 50%;
+  background-color: #000000;
+  color: white;
+  border: none;
+  outline: none;
+  margin: 0 10px;
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  font-size: 15px;
+  border-radius: 5px;
+}
+
+.atcButton:nth-child(1) {
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+}

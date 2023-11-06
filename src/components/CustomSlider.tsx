@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ImageElement } from "../types";
 import { getClickdata } from "../hooks/firebase";
 import { URL } from "../constants";
-import styles from "./customSlider.module.css";
+import styles from "../styles/customSlider.module.css";
 
 function Customslider({
   productimages,
@@ -69,10 +69,8 @@ function Customslider({
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           onClick={() => {
-            videoRef.current.play();
             setIsOpen(false);
             startProgress();
-            videoRef.current.play();
           }}
         >
           <path
@@ -88,7 +86,7 @@ function Customslider({
             onClick={() => getClickdata("VIEW_PRODUCT")}
           >
             <h5
-              style={{ fontSize: "14px", marginBottom: ".5rem", width: "80%", color:'black' }}
+              style={{ fontSize: "14px", marginBottom: "5px", width: "80%", color:'black' }}
             >
               {productTitle}
             </h5>

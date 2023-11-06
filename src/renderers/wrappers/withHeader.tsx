@@ -11,7 +11,7 @@ const withHeader: React.FC<
     globalHeader: Function;
   }>
 > = ({ story, globalHeader, children }) => {
-  const { header, onAudioClick, onCloseClick , videoRef} =
+  const { header, onAudioClick, onCloseClick , isMuted} =
     useContext<GlobalCtx>(GlobalContext);
   return (
     <>
@@ -26,20 +26,14 @@ const withHeader: React.FC<
             width: "95%",
           }}
         >
-          {/* {typeof story === "object" ? (
-            globalHeader ? (
-              globalHeader(story.header)
-            ) : ( */}
           <Header
             story={story}
-            muted={videoRef?.current?.muted}
+            muted={isMuted}
             heading={header?.heading}
             profileImage={header?.profileImage}
             onCloseClick={onCloseClick}
             onAudioClick={onAudioClick}
           />
-          {/* )
-          ) : null} */}
         </div>
       }
     </>

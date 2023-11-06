@@ -4,7 +4,7 @@ import { Action, GlobalCtx, Story } from "../../interfaces";
 import ProductCard from "../../components/ProductCard";
 import GlobalContext from "../../context/Global";
 import { MemoizedStoryDrawer } from "../../components/StoryDrawer";
-import "./index.css";
+import styles from "../../styles/seeMore.module.css";
 
 const withSeeMore: React.FC<
   React.PropsWithChildren<{
@@ -40,7 +40,7 @@ const withSeeMore: React.FC<
             display: "flex",
             alignItems: "flex-end",
             width: "100%",
-            padding: ".5rem 0",
+            padding: "5px 0",
             justifyContent: `${
               story?.dots?.length > 1 ? "flex-end" : "center"
             }`,
@@ -51,10 +51,10 @@ const withSeeMore: React.FC<
               display: "flex",
               justifyContent: "start",
               alignItems: "flex-end",
-              gap: ".5rem",
+              gap: "5px",
               overflowX: "auto",
               height: "auto",
-              paddingLeft: "1rem",
+              paddingLeft: "10px",
             }}
           >
             {story?.dots?.map((prod, index) => (
@@ -74,7 +74,7 @@ const withSeeMore: React.FC<
             ))}
           </div>
           <div
-            className={`f22storiesdrawer ${isOpen ? "f22open" : ""}`}
+            className={`${styles.f22storiesdrawer} ${isOpen ? styles.f22open : ""}`}
             onClick={() => {
               setIsOpen((prev) => !prev);
               startProgress();

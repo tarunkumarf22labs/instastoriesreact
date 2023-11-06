@@ -8,7 +8,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.9rem;
+  gap: 9px;
 }
 .navIcons svg {
   width: 20px;
@@ -26,13 +26,13 @@
 
 .mainSlide {
   width: 266px;
-  height: 16rem;
-  max-height: 23rem;
+  height: 160px;
+  max-height: 230px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 2rem;
-  padding: 1rem;
+  gap: 20px;
+  padding: 10px;
   transition: transform 0.5s ease-in-out;
 }
 
@@ -71,8 +71,8 @@
 }
 
 .allSlidesContainer svg {
-  height: 1.5rem;
-  width: 1.5rem;
+  height: 15px;
+  width: 15px;
   position: absolute;
   z-index: 2;
   top: 50%;
@@ -84,7 +84,7 @@
   max-width: 420px;
   width: 100%;
   height: 100px;
-  padding-left: 1rem;
+  padding-left: 10px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -100,7 +100,8 @@
 .slideContainer {
   flex-shrink: 0;
   flex-basis: auto;
-  width: 125px;
+  min-width: 125px;
+  padding: 10px 15px;
   height: 51px;
   display: flex;
   align-items: center;
@@ -108,8 +109,8 @@
   transition: transform 0.5s ease-in-out;
   border: 1px solid lightgrey;
   border-radius: 25px;
-  font-size: 1.4rem;
-  margin-right: 0.5rem;
+  font-size: 14px;
+  margin-right: 5px;
 }
 
 .slideContainer img {
@@ -139,48 +140,53 @@
 .prodDesc {
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
-  gap: 0.5rem;
+  padding: 10px;
+  gap: 5px;
   overflow-x: auto;
 }
 .prodInfo > a {
   text-decoration: none;
   color: #000;
+  display: block;
+  width: 80%;
+}
+.prodInfo{
+  width: 100%;
 }
 
 .prodImages {
   width: 100%;
-  height: 16rem;
+  height: 160px;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 10px;
   overflow-x: auto;
-  padding-left: 1rem;
-}
+  padding-left: 10px;
+} 
 .prodImages::-webkit-scrollbar {
   height: 0;
 }
 .prodImage {
-  height: 15.5rem;
-  width: 10.3rem;
+  height: 155px;
+  width: 103px;
 }
 
 .prodImage img {
-  width: 10.3rem;
-  height: 15.5rem;
+  width: 103px;
+  height: 155px;
   object-fit: cover;
   max-width: fit-content !important;
 }
 .showMore {
-  font-size: 0.9rem;
+  font-size: 9px;
   text-decoration: none;
   color: #000;
   font-weight: 600;
 }
 .productDeatils {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  padding: 0 1rem;
+  margin-top: 10px;
+  font-size: 90px;
+  padding: 0 10px;
 }
 .sizeText{
   display: block;

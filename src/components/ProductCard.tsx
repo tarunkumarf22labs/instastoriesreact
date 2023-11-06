@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import { getClickdata } from "../hooks/firebase";
-import styles from "./productCard.module.css";
+import styles from "../styles/productCard.module.css";
 import { URL, logoSrc } from "../constants";
 
 type Props = {
