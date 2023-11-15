@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-// import { getDataBasedOnPathname } from "../util/common";
+import { getDataBasedOnPathname } from "../util/common";
 
-const useStoriesData = () => {
+const useStoriesData = (showReels) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -9,14 +9,16 @@ const useStoriesData = () => {
       const requestOptions = {
         method: "GET",
       };
-      const shop = window.Shopify?.shop?.split(".")[0] || "hustlezy";
+      console.log('inside')
+      const shop = window.Shopify?.shop?.split(".")[0] || "ekkatha";
       const data = await fetch(
-        `https://s3.f22labs.cloud/shopclips/${shop}.json`,
+        `https://s3.f22labs.cloud/shopclips/${shop}${showReels ? '-reels' : ''}.json`,
         requestOptions
       );
       const res = await data.json();
-    //   const resolvedData= getDataBasedOnPathname(window.location.pathname, res)
-      setData(res?.["/"]);
+      console.log({res})
+      const resolvedData= getDataBasedOnPathname(window.location.pathname, res)
+      setData(resolvedData);
     };
 
     fetchData();

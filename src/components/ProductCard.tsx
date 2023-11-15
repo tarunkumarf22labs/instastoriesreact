@@ -165,7 +165,7 @@ const ProductCard = ({
                 src={product?.images[0].src}
                 alt={product?.title}
                 loading="eager"
-                style={{ width: "100px", height: "100px", borderRadius: "5px" }}
+                style={{ width: "100px", height: "100px", borderRadius: "5px", objectFit:'contain' }}
               />
             </div>
             <div
@@ -193,6 +193,7 @@ const ProductCard = ({
           >
             {product?.variants?.map((variant, index) => (
               <div
+                key={index}
                 className={`${styles.productCardVariant} ${
                   selectedVariantIndex == index
                     ? styles.productCardVariantActive

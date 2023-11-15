@@ -35,6 +35,7 @@ const MyStories = (props) => {
     activeStories,
     isMuted,
   } = state;
+  const [zIndex, setzIndex] = useState("2147483646")
   const videoRef = useRef(null);
   const isSizeGreaterThan440 = useWindowWidth();
 
@@ -57,6 +58,15 @@ const MyStories = (props) => {
     },
     [activeStoriesIndex]
   );
+
+  const hanldeUpdateZindex = (action) => {
+    if(action === 'open'){
+      setzIndex("2147483647")
+
+    } else {
+      setzIndex("2147483646")
+    }
+  }
 
   const onAllStoriesEnd = useCallback(() => {
     if (activeStoriesIndex === storiesData.length - 1) {
@@ -90,6 +100,7 @@ const MyStories = (props) => {
 
   const onCloseClick = useCallback(() => {
     dispatch({ type: HIDE_STORIES });
+    hanldeUpdateZindex("close")
   }, [showStories]);
 
   const getHeader = useCallback(
@@ -138,6 +149,8 @@ const MyStories = (props) => {
     videoRef.current.muted = isMuted;
   }
 
+  console.log('zIndex', zIndex)
+
   return (
     <>
       <div
@@ -145,15 +158,19 @@ const MyStories = (props) => {
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: `${
+          justifyContent: props.showReels ? '' : `${
             props?.storesData?.length > 10 ? "flex-start" : "center"
           }`,
           overflowX: "scroll",
           width: "100%",
           padding: "0 10px",
+          zIndex: zIndex,
+          isolation: 'isolate', 
+          position: 'relative'
         }}
       >
         {props?.storesData.map((item, index) => {
+          console.log({item})
           return (
             <div
               key={index}
@@ -164,15 +181,45 @@ const MyStories = (props) => {
                 alignItems: "center",
                 padding: "10px",
               }}
+              onClick={() => {
+                // getClickdata("VIEWS");
+                onSpecificStoriesClick(index, item);
+                hanldeUpdateZindex("open")
+              }}
             >
               <div
                 style={{
-                  height: "66px",
-                  width: "66px",
-                  borderRadius: "50%",
-                  border: "2px solid #959595",
+                  height: props?.showReels ? "400px" : "66px",
+                  width: props?.showReels ? "256px" : '66px',
+                  borderRadius: props?.showReels ? "" : "50%",
+                  position: props?.showReels ? "relative" : "",
+                  border: "2px solid #FE8039",
                 }}
               >
+                {props?.showReels ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    fill="#000000"
+                    height="50px"
+                    width="50px"
+                    version="1.1"
+                    id="Capa_1"
+                    viewBox="0 0 210 210"
+                    xml:space="preserve"
+                    className={styles.playBtn}
+                    style={{
+                      position: "absolute",
+                      top: "43%",
+                      left: "43%",
+                      transform: "translate(-50%, -50%)",
+                      fill: "white",
+                      opacity: "80%",
+                    }}
+                  >
+                    <path d="M179.07,105L30.93,210V0L179.07,105z" />
+                  </svg>
+                ) : null}
                 <img
                   src={item?.image}
                   key={index}
@@ -181,13 +228,9 @@ const MyStories = (props) => {
                     padding: "2px",
                     width: "100%",
                     height: "100%",
-                    borderRadius: "50%",
+                    borderRadius: props?.showReels ? "" : "50%",
                   }}
                   loading="eager"
-                  onClick={() => {
-                    getClickdata("VIEWS");
-                    onSpecificStoriesClick(index, item);
-                  }}
                 />
               </div>
               <span
@@ -201,7 +244,7 @@ const MyStories = (props) => {
                   paddingTop: "5px",
                 }}
               >
-                {capitalizeFirstLetterOfEachWord(item?.name)}
+                {capitalizeFirstLetterOfEachWord(item?.name?.trim())}
               </span>
             </div>
           );
@@ -219,7 +262,7 @@ const MyStories = (props) => {
             height: "100vh",
             background: "rgba(0, 0, 0, 0.4)",
             backdropFilter: "blur(10px)",
-            zIndex: 2147483647,
+            zIndex: zIndex,
             isolation: "isolate",
             alignItems: "center",
           }}
