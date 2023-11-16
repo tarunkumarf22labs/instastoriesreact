@@ -137,7 +137,7 @@ const ProductCard = ({
   };
 
   return (
-    <div
+   product?.title ? <div
       onClick={() => handleOverlayClick()}
       className={isVariantSelectorOpen ? styles.variantOverlay : ""}
     >
@@ -243,7 +243,8 @@ const ProductCard = ({
           </span>
         </div>
       </div>{" "}
-    </div>
+    </div> :
+    <></>
   );
 };
 
