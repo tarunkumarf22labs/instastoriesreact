@@ -23,6 +23,7 @@ const ProductCard = ({
   const [isVariantSelectorOpen, setIsVariantSelectorOpen] = useState(false);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [textforCart, setTextforCart] = useState("Add to cart");
+  const [isLoading, setIsLoading] = useState(false);
 
   function handledata({ product }) {
     return {
@@ -32,6 +33,7 @@ const ProductCard = ({
     };
   }
   useEffect(() => {
+    setIsLoading(true);
     const Abortcontoller = new AbortController();
     async function fetchData() {
       try {
@@ -43,6 +45,8 @@ const ProductCard = ({
         const relevantData = handledata(value);
         setProduct(relevantData);
         setVariant(relevantData?.variants[0].id);
+
+        setIsLoading(false);
       } catch (error) {
         console.log({ productname });
         console.error("Error fetching data:", error);
@@ -133,43 +137,54 @@ const ProductCard = ({
   };
 
   return (
-    <div
+   product?.title ? <div
       onClick={() => handleOverlayClick()}
       className={isVariantSelectorOpen ? styles.variantOverlay : ""}
     >
       <div className={styles.productCard}>
-        <div className={styles.productCardContent}>
-          <div
-            className={styles.productCardImg}
-            onMouseEnter={() => triggers.setProductId(productname)}
-            onClick={() => {
-              handleOpenProductDetails();
-              videoRef.current.pause();
-            }}
-          >
-            <img
-              src={product?.images[0].src}
-              alt={product?.title}
-              loading="eager"
-              style={{ width: "100px", height: "100px", borderRadius: "5px" }}
-            />
+        {isLoading ? (
+          <div className={styles.shimmerContainer}>
+            <box className={`${styles.shine} ${styles.box}`}></box>
+            <div>
+              <lines className={`${styles.shine} ${styles.lines}`}></lines>
+              <lines className={`${styles.shine} ${styles.lines}`}></lines>
+              <lines className={`${styles.shine} ${styles.lines}`}></lines>
+            </div>
           </div>
-          <div
-            className={styles.productCardInfo}
-            onMouseEnter={() => triggers.setProductId(productname)}
-            onClick={() => {
-              handleOpenProductDetails();
-              videoRef.current.pause();
-            }}
-          >
-            <span className={styles.productCardInfoTitle}>
-              {getContentString(product?.title)}
-            </span>
-            <span className={styles.productCardInfoPrice}>
-              Rs.{product?.variants[0].price}
-            </span>
+        ) : (
+          <div className={styles.productCardContent}>
+            <div
+              className={styles.productCardImg}
+              onMouseEnter={() => triggers.setProductId(productname)}
+              onClick={() => {
+                handleOpenProductDetails();
+                videoRef.current.pause();
+              }}
+            >
+              <img
+                src={product?.images[0].src}
+                alt={product?.title}
+                loading="eager"
+                style={{ width: "100px", height: "100px", borderRadius: "5px", objectFit:'contain' }}
+              />
+            </div>
+            <div
+              className={styles.productCardInfo}
+              onMouseEnter={() => triggers.setProductId(productname)}
+              onClick={() => {
+                handleOpenProductDetails();
+                videoRef.current.pause();
+              }}
+            >
+              <span className={styles.productCardInfoTitle}>
+                {getContentString(product?.title)}
+              </span>
+              <span className={styles.productCardInfoPrice}>
+                Rs.{product?.variants[0].price}
+              </span>
+            </div>
           </div>
-        </div>
+        )}
         {product?.variants?.length > 1 && (
           <div
             className={`${styles.productCardVariants} ${
@@ -178,6 +193,7 @@ const ProductCard = ({
           >
             {product?.variants?.map((variant, index) => (
               <div
+                key={index}
                 className={`${styles.productCardVariant} ${
                   selectedVariantIndex == index
                     ? styles.productCardVariantActive
@@ -218,33 +234,6 @@ const ProductCard = ({
         >
           <span>
             Powered By{" "}
-            {/* <svg
-              width="18"
-              height="18"
-              viewBox="0 0 15 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="7.95724" cy="7" r="7" fill="white" />
-              <path
-                d="M7.9293 2.5L12.7188 9.30263L11.8767 10.5L9.74509 8.97368L7.9293 10.0132L6.0872 8.97368L3.96877 10.5L3.15298 9.30263L7.9293 2.5Z"
-                fill="#272727"
-              />
-              <path
-                d="M7.92951 10.0132L6.0874 8.97368L6.10028 5.10526L7.92951 2.5L9.7453 5.07902V8.97368L7.92951 10.0132Z"
-                fill="#555555"
-              />
-              <path
-                opacity="0.2"
-                d="M3.15298 9.30263L7.9293 2.5L8.84065 3.79442L6.0872 8.97368L3.96877 10.5L3.15298 9.30263Z"
-                fill="white"
-              />
-              <path
-                opacity="0.3"
-                d="M7.92917 2.5L12.7186 9.30263L11.8765 10.5L9.74496 8.97368L7.0589 3.73948L7.92917 2.5Z"
-                fill="#272727"
-              />
-            </svg> */}
             <img
               style={{ width: "15px", height: "15px" }}
               src={logoSrc}
@@ -254,7 +243,8 @@ const ProductCard = ({
           </span>
         </div>
       </div>{" "}
-    </div>
+    </div> :
+    <></>
   );
 };
 

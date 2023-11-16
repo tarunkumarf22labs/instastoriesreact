@@ -13,3 +13,19 @@
         justify-content: flex-start !important;
     }
 }
+
+.playBtn{
+    animation: zoomInOut 2s ease-in-out infinite;
+  }
+  
+  @keyframes zoomInOut{
+    0%{
+      transform: scale(1);
+    }
+    50%{
+      transform: scale(1.5);
+    }
+    100%{
+      transform: scale(1);
+    }
+  }

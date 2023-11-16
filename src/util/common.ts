@@ -15,6 +15,7 @@ function capitalizeFirstLetter(inputString) {
 }
 
 export const capitalizeFirstLetterOfEachWord = (str) => {
+  if(!str) return ""
   const words = str.split(" ");
   for (let i = 0; i < words.length; i++) {
     words[i] = capitalizeFirstLetter(words[i]);
