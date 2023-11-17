@@ -1,10 +1,23 @@
-export const getDataBasedOnPathname = (path, dataObj) => {
-  if (!!dataObj && path.length) {
-    let dataArr = dataObj[path];
-    if (dataArr.length) return dataArr;
-    else return dataObj["/*"];
-  }
-  return [];
+export const getResolvedData = (stories) => {
+  return stories.map((story) => {
+    return {
+      id: story?.story_id,
+      image: story?.thumbnail,
+      name: story?.story_name,
+      childstories: story?.files.map((media) => {
+        return {
+          id: media?.media_id,
+          storiescontnet: media.media_url,
+          dots: media.products.map((product) => {
+            return {
+              id: product.product_id,
+              productname: product.product_handle,
+            };
+          }),
+        };
+      }),
+    };
+  });
 };
 
 function capitalizeFirstLetter(inputString) {
@@ -15,7 +28,7 @@ function capitalizeFirstLetter(inputString) {
 }
 
 export const capitalizeFirstLetterOfEachWord = (str) => {
-  if(!str) return ""
+  if (!str) return "";
   const words = str.split(" ");
   for (let i = 0; i < words.length; i++) {
     words[i] = capitalizeFirstLetter(words[i]);
@@ -30,12 +43,12 @@ const generateStoriesData = (storiesData) =>
       url: item?.storiescontnet,
       type: item?.storiescontnet.includes("mp4") ? "video" : "image",
     }))
-);
+  );
 
 export const getInitialData = (props) => ({
-  storiesData:  generateStoriesData(props?.storesData),
+  storiesData: generateStoriesData(props?.storesData),
   showStories: false,
   activeStoriesIndex: 0,
   activeStories: [],
   isMuted: false,
-})
+});

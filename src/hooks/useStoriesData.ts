@@ -1,23 +1,34 @@
 import { useEffect, useState } from "react";
-import { getDataBasedOnPathname } from "../util/common";
+import { getResolvedData } from "../util/common";
+import { BASE_URL } from "../constants";
 
 const useStoriesData = (showReels) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const requestOptions = {
-        method: "GET",
+      let url = `${BASE_URL}/stories`;
+      if (showReels) {
+        url = `${BASE_URL}/reels`;
+      }
+
+      const store = window?.Shopify;
+      const shop = store?.shop?.split(".")[0];
+      const access_token = store?.accessToken;
+      const path = window?.location?.pathname;
+
+      const queryParams = {
+        store_id: `offline_${shop}`,
+        access_token,
+        path: path || "/*",
       };
-      console.log('inside')
-      const shop = window.Shopify?.shop?.split(".")[0] || "hustlezy";
-      const data = await fetch(
-        `https://s3.f22labs.cloud/shopclips/${shop}${showReels ? '-reels' : ''}.json`,
-        requestOptions
-      );
-      const res = await data.json();
-      console.log({res})
-      const resolvedData= getDataBasedOnPathname(window.location.pathname, res)
+      const urlWithParams = new URL(url);
+      urlWithParams.search = new URLSearchParams(queryParams).toString();
+      const data = await fetch(urlWithParams, {
+        method: "GET",
+      });
+      const stories = await data.json();
+      const resolvedData = getResolvedData(stories);
       setData(resolvedData);
     };
 

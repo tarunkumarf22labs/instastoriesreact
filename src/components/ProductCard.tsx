@@ -48,7 +48,6 @@ const ProductCard = ({
 
         setIsLoading(false);
       } catch (error) {
-        console.log({ productname });
         console.error("Error fetching data:", error);
       }
     }
@@ -119,7 +118,6 @@ const ProductCard = ({
       })
       .catch((error) => {
         // Handle any errors here
-        console.error(error);
         setTextforCart("Added To Cart");
       });
   };
