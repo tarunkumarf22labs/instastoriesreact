@@ -149,8 +149,6 @@ const MyStories = (props) => {
     videoRef.current.muted = isMuted;
   }
 
-  console.log('zIndex', zIndex)
-
   return (
     <>
       <div
@@ -164,13 +162,9 @@ const MyStories = (props) => {
           overflowX: "scroll",
           width: "100%",
           padding: "0 10px",
-          zIndex: zIndex,
-          isolation: 'isolate', 
-          position: 'relative'
         }}
       >
         {props?.storesData.map((item, index) => {
-          console.log({item})
           return (
             <div
               key={index}
