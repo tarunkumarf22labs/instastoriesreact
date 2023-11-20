@@ -6,9 +6,9 @@ import useStoriesData from "./hooks/useStoriesData";
 
 function App(props) {
   const showReels = props.container.attributes.showReels;
-  const data = useStoriesData(showReels)
+  const {stories, properties} = useStoriesData(showReels)
 
-  return <>{data.length ? <MyStories showReels={showReels} storesData={data} /> : null}</>;
+  return <>{stories?.length ? <MyStories showReels={showReels} storesData={stories} properties={properties}/> : null}</>;
 }
 
 export default App;

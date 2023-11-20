@@ -149,8 +149,6 @@ const MyStories = (props) => {
     videoRef.current.muted = isMuted;
   }
 
-  console.log('zIndex', zIndex)
-
   return (
     <>
       <div
@@ -193,7 +191,7 @@ const MyStories = (props) => {
                   width: props?.showReels ? "256px" : '66px',
                   borderRadius: props?.showReels ? "" : "50%",
                   position: props?.showReels ? "relative" : "",
-                  border: "2px solid #FE8039",
+                  border: `2px solid ${props?.properties?.bg}`,
                 }}
               >
                 {props?.showReels ? (
