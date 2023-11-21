@@ -106,18 +106,6 @@ const ProductCard = ({
       })
       .then((data) => {
         // Handle the response data here
-        const cartCountElements =
-          document.getElementsByClassName("cart-count-bubble");
-
-        if (cartCountElements.length > 0) {
-          const firstCartCountElement = cartCountElements[0];
-          const firstSpanElement = firstCartCountElement.querySelector("span");
-
-          if (firstSpanElement) {
-            firstSpanElement.textContent =
-              parseInt(firstSpanElement.textContent) + 1;
-          }
-        }
 
         setTextforCart("added to cart");
       })
