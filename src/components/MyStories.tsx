@@ -35,7 +35,7 @@ const MyStories = (props) => {
     activeStories,
     isMuted,
   } = state;
-  const [zIndex, setzIndex] = useState("2147483646")
+  const [zIndex, setzIndex] = useState("2147483646");
   const videoRef = useRef(null);
   const isSizeGreaterThan440 = useWindowWidth();
 
@@ -60,13 +60,12 @@ const MyStories = (props) => {
   );
 
   const hanldeUpdateZindex = (action) => {
-    if(action === 'open'){
-      setzIndex("2147483647")
-
+    if (action === "open") {
+      setzIndex("2147483647");
     } else {
-      setzIndex("2147483646")
+      setzIndex("2147483646");
     }
-  }
+  };
 
   const onAllStoriesEnd = useCallback(() => {
     if (activeStoriesIndex === storiesData.length - 1) {
@@ -100,7 +99,7 @@ const MyStories = (props) => {
 
   const onCloseClick = useCallback(() => {
     dispatch({ type: HIDE_STORIES });
-    hanldeUpdateZindex("close")
+    hanldeUpdateZindex("close");
   }, [showStories]);
 
   const getHeader = useCallback(
@@ -110,6 +109,17 @@ const MyStories = (props) => {
     },
     [activeStoriesIndex]
   );
+
+  const getAlignmentOfStories = useMemo(() => {
+    const numOfStories = props?.storesData?.length;
+    if (!isSizeGreaterThan440 && numOfStories > 4) {
+      return "flex-start";
+    } else if (isSizeGreaterThan440 && numOfStories > 10) {
+      return "flex-start";
+    } else {
+      return "center";
+    }
+  }, [isSizeGreaterThan440]);
 
   const storiesProps = useMemo(
     () => ({
@@ -156,19 +166,16 @@ const MyStories = (props) => {
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: props.showReels ? '' : `${
-            props?.storesData?.length > 10 ? "flex-start" : "center"
-          }`,
+          justifyContent: props.showReels ? "" : getAlignmentOfStories,
           overflowX: "scroll",
           width: "100%",
           padding: "0 10px",
           zIndex: zIndex,
-          isolation: 'isolate', 
-          position: 'relative'
+          isolation: "isolate",
+          position: "relative",
         }}
       >
         {props?.storesData.map((item, index) => {
-          console.log({item})
           return (
             <div
               key={index}
@@ -182,13 +189,13 @@ const MyStories = (props) => {
               onClick={() => {
                 // getClickdata("VIEWS");
                 onSpecificStoriesClick(index, item);
-                hanldeUpdateZindex("open")
+                hanldeUpdateZindex("open");
               }}
             >
               <div
                 style={{
                   height: props?.showReels ? "400px" : "66px",
-                  width: props?.showReels ? "256px" : '66px',
+                  width: props?.showReels ? "256px" : "66px",
                   borderRadius: props?.showReels ? "" : "50%",
                   position: props?.showReels ? "relative" : "",
                   border: `2px solid ${props?.properties?.bg}`,
