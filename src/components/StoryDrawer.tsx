@@ -23,6 +23,7 @@ function StoryDrawer({
   
   function handledata({product}) {
     return {
+      id: product.id,
       title: product.title,
       variants: product.variants,
       images: product.images
@@ -55,32 +56,70 @@ function StoryDrawer({
     };
   }, [productname]);
 
-  const handleAddToCart = () => {
-    setTextforCart(<Loader/>)
+  // const handleAddToCart = () => {
+  //   setTextforCart(<Loader/>)
     
-    const url = `${URL}/cart/add`;
+  //   const url = `${URL}/cart/add`;
 
-    const requestBody = {
-      Style: "Limited-2",
-      quantity: 1,
-      form_type: "product",
-      utf8: "✓",
-      id: variant.id,
-      sections:
-        "cart-notification-product,cart-notification-button,cart-icon-bubble",
-      sections_url: "/products/gadwal-limited",
-    };
+  //   const requestBody = {
+  //     Style: "Limited-2",
+  //     quantity: 1,
+  //     form_type: "product",
+  //     utf8: "✓",
+  //     id: variant.id,
+  //     "product-id" : product.id,
+  //     sections:
+  //       "cart-notification-product,cart-notification-button,cart-icon-bubble",
+  //     sections_url: "/products/gadwal-limited",
+  //   };
 
-    const jsonRequestBody = JSON.stringify(requestBody);
+  //   const jsonRequestBody = JSON.stringify(requestBody);
 
+  //   const requestOptions = {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json", // Set the content type to JSON
+  //     },
+  //     body: jsonRequestBody, // Set the request body as the JSON string
+  //   };
+
+  //   fetch(url, requestOptions)
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! Status: ${response.status}`);
+  //       }
+  //       return response.json(); // Parse the response JSON if needed
+  //     })
+  //     .then((data) => {
+  //       // Handle the response data here
+  //       setTextforCart("added to cart");
+  //     })
+  //     .catch((error) => {
+  //       // Handle any errors here
+  //       setTextforCart("added to cart");
+  //       console.error(error);
+  //     });
+  // };
+  const handleAddToCart = () => {
+    setTextforCart(<Loader/>);
+  
+    const url = `https://deciwood.com/cart/add`;
+  
+    const formData = new FormData();
+    formData.append("Style", "Limited-2");
+    formData.append("quantity", 1);
+    formData.append("form_type", "product");
+    formData.append("utf8", "✓");
+    formData.append("id", variant.id);
+    formData.append("product-id", product.id);
+    formData.append("sections", "cart-notification-product,cart-notification-button,cart-icon-bubble");
+    formData.append("sections_url", `/products/${productname}`);
+  
     const requestOptions = {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json", // Set the content type to JSON
-      },
-      body: jsonRequestBody, // Set the request body as the JSON string
+      body: formData,
     };
-
+  
     fetch(url, requestOptions)
       .then((response) => {
         if (!response.ok) {
@@ -98,6 +137,8 @@ function StoryDrawer({
         console.error(error);
       });
   };
+  
+  
   return (
     <div
       className={styles.pluginInnerContainer}

@@ -26,7 +26,10 @@ const ProductCard = ({
   const [isLoading, setIsLoading] = useState(false);
 
   function handledata({ product }) {
+
+    
     return {
+      id: product.id,
       title: product.title,
       variants: product.variants,
       images: product.images,
@@ -74,38 +77,26 @@ const ProductCard = ({
     stopProgress();
     videoRef.current.pause();
   };
+  // variant
   const handleAddToCart = () => {
-    // Define the URL
-
-    const url = `${URL}/cart/add`;
-
-    setTextforCart(<Loader />);
-
-    // Define the request body as an object
-    const requestBody = {
-      Style: "Limited-2",
-      quantity: 1,
-      form_type: "product",
-      utf8: "✓",
-      id: variant,
-      sections:
-        "cart-notification-product,cart-notification-button,cart-icon-bubble",
-      sections_url: "/products/gadwal-limited",
-    };
-
-    // Convert the request body to JSON
-    const jsonRequestBody = JSON.stringify(requestBody);
-
-    // Define the POST request options
+    setTextforCart(<Loader/>);
+  
+    const url = `https://deciwood.com/cart/add`;
+  
+    const formData = new FormData();
+    formData.append("Style", "Limited-2");
+    formData.append("quantity", 1);
+    formData.append("form_type", "product");
+    formData.append("utf8", "✓");
+    formData.append("id", variant);
+    formData.append("product-id", product.id);
+    formData.append("sections", "cart-notification-product,cart-notification-button,cart-icon-bubble");
+    formData.append("sections_url", `/products/${productname}`);  
     const requestOptions = {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json", // Set the content type to JSON
-      },
-      body: jsonRequestBody, // Set the request body as the JSON string
+      body: formData,
     };
-
-    // Make the POST request
+  
     fetch(url, requestOptions)
       .then((response) => {
         if (!response.ok) {
@@ -115,15 +106,27 @@ const ProductCard = ({
       })
       .then((data) => {
         // Handle the response data here
-        setTextforCart("Added To Cart");
+        const cartCountElements =
+          document.getElementsByClassName("cart-count-bubble");
+
+        if (cartCountElements.length > 0) {
+          const firstCartCountElement = cartCountElements[0];
+          const firstSpanElement = firstCartCountElement.querySelector("span");
+
+          if (firstSpanElement) {
+            firstSpanElement.textContent =
+              parseInt(firstSpanElement.textContent) + 1;
+          }
+        }
+
+        setTextforCart("added to cart");
       })
       .catch((error) => {
         // Handle any errors here
+        setTextforCart("added to cart");
         console.error(error);
-        setTextforCart("Added To Cart");
       });
   };
-
   const handleOverlayClick = () => {
     if (isVariantSelectorOpen) {
       setIsVariantSelectorOpen(false);
