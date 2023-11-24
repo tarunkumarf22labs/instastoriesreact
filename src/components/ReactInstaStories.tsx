@@ -88,7 +88,7 @@ const ReactInstaStories = function (props: ReactInstaStoriesProps) {
 
 ReactInstaStories.defaultProps = {
   width: '100%',
-  height: '100vh',
+  height: '100%',
   defaultInterval: 4000,
   preloadCount: 1,
 };

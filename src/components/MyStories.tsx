@@ -11,7 +11,6 @@ import React, {
 import Stories from "../components/ReactInstaStories";
 import { StoriesData } from "../interfaces";
 import { getClickdata } from "../hooks/firebase";
-import styles from "../styles/myStories.module.css";
 import { useWindowWidth } from "../hooks/useWindowSize";
 import {
   capitalizeFirstLetterOfEachWord,
@@ -21,10 +20,13 @@ import {
   HIDE_STORIES,
   SET_ACTIVE_STORIES,
   SET_ACTIVE_STORIES_INDEX,
+  SET_CURRENT_INDEX,
   SHOW_STORIES,
   TOGGLE_MUTE,
 } from "../reducer/stories.actionTypes";
 import { storiesReducer } from "../reducer/stories.reducer";
+
+import styles from "../styles/myStories.module.css";
 
 const MyStories = (props) => {
   const [state, dispatch] = useReducer(storiesReducer, getInitialData(props));
@@ -34,10 +36,17 @@ const MyStories = (props) => {
     activeStoriesIndex,
     activeStories,
     isMuted,
+    currentIndex,
   } = state;
   const [zIndex, setzIndex] = useState("2147483646");
   const videoRef = useRef(null);
   const isSizeGreaterThan440 = useWindowWidth();
+
+  const deviceHeight = useMemo(() => {
+    if (!isSizeGreaterThan440) {
+      return window.innerHeight;
+    }
+  }, [isSizeGreaterThan440]);
 
   const onSpecificStoriesClick = useCallback(
     (index, payload) => {
@@ -129,7 +138,7 @@ const MyStories = (props) => {
       onAllStoriesEnd: onAllStoriesEnd,
       onNext: onNextBtnClick,
       loop: true,
-      currentIndex: 0,
+      currentIndex: currentIndex,
       header: getHeader(activeStoriesIndex),
       onAudioClick: onAudioClick,
       onCloseClick: onCloseClick,
@@ -151,6 +160,37 @@ const MyStories = (props) => {
     ]
   );
 
+  const findIndexesForStory = (storiesData) => {
+    const story_id = window?.location?.search.split('=')[1];
+    if (story_id) {
+      for (let i = 0; i < storiesData.length; i++) {
+        for (let j = 0; j < storiesData[i].length; j++) {
+          if (storiesData[i][j]?.id == story_id) {
+            return {activeStoriesIndex: i, activeChildStoryIndex: j}  
+          }
+        }
+      }
+  }
+  return {}
+}
+
+  useEffect(() => {
+      const {activeStoriesIndex, activeChildStoryIndex} = findIndexesForStory(storiesData)
+      if (activeStoriesIndex !== undefined && activeChildStoryIndex !== undefined) {
+        console.log({activeChildStoryIndex, activeStoriesIndex})
+        dispatch({
+          type: SET_ACTIVE_STORIES_INDEX,
+          payload: activeStoriesIndex,
+        });
+        dispatch({
+          type: SET_CURRENT_INDEX,
+          payload: activeChildStoryIndex,
+        });
+        !showStories && dispatch({ type: SHOW_STORIES });
+      }
+    
+  }, [storiesData]);
+
   useEffect(() => {
     dispatch({ type: SET_ACTIVE_STORIES, payload: activeStoriesIndex });
   }, [activeStoriesIndex]);
@@ -170,9 +210,6 @@ const MyStories = (props) => {
           overflowX: "scroll",
           width: "100%",
           padding: "0 10px",
-          zIndex: zIndex,
-          isolation: "isolate",
-          position: "relative",
         }}
       >
         {props?.storesData.map((item, index) => {
@@ -257,19 +294,10 @@ const MyStories = (props) => {
       </div>
       {showStories && (
         <div
+          className={styles.specialContainer}
           style={{
-            display: "flex",
-            justifyContent: "center",
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            background: "rgba(0, 0, 0, 0.4)",
-            backdropFilter: "blur(10px)",
             zIndex: zIndex,
-            isolation: "isolate",
-            alignItems: "center",
+            height: deviceHeight || "100%",
           }}
         >
           <Stories {...storiesProps} />

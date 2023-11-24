@@ -4,6 +4,7 @@ import Loader from "./Loader";
 import { getClickdata } from "../hooks/firebase";
 import styles from "../styles/productCard.module.css";
 import { URL, logoSrc } from "../constants";
+import { handledata } from "../util/common";
 
 type Props = {
   productname: string;
@@ -25,16 +26,6 @@ const ProductCard = ({
   const [textforCart, setTextforCart] = useState("Add to cart");
   const [isLoading, setIsLoading] = useState(false);
 
-  function handledata({ product }) {
-
-    
-    return {
-      id: product.id,
-      title: product.title,
-      variants: product.variants,
-      images: product.images,
-    };
-  }
   useEffect(() => {
     setIsLoading(true);
     const Abortcontoller = new AbortController();
@@ -80,8 +71,8 @@ const ProductCard = ({
   // variant
   const handleAddToCart = () => {
     setTextforCart(<Loader/>);
-  
-    const url = `https://deciwood.com/cart/add`;
+    const shop = window?.Shopify?.shop.split(".")[0];
+    const url = `https://${shop}.com/cart/add`;
   
     const formData = new FormData();
     formData.append("Style", "Limited-2");

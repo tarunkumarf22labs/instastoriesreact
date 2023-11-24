@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { useEffect, useState } from "react";
 import { HeaderProps } from "./../interfaces";
+import ShareButton from "./ShareButton";
 
 const Header = ({
   story,
@@ -54,6 +55,7 @@ const Header = ({
           cursor: "pointer",
         }}
       >
+        <ShareButton story_id={story?.id}/>
         {story?.type === "video" && (
           <div
             onClick={(e) => {
