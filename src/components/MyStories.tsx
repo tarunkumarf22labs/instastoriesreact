@@ -109,6 +109,7 @@ const MyStories = (props) => {
   const onCloseClick = useCallback(() => {
     dispatch({ type: HIDE_STORIES });
     hanldeUpdateZindex("close");
+    if (currentIndex != 0) dispatch({ type: SET_CURRENT_INDEX, payload: 0 });
   }, [showStories]);
 
   const getHeader = useCallback(
@@ -161,34 +162,37 @@ const MyStories = (props) => {
   );
 
   const findIndexesForStory = (storiesData) => {
-    const story_id = window?.location?.search.split('=')[1];
+    const story_id = window?.location?.search.split("=")[1];
     if (story_id) {
       for (let i = 0; i < storiesData.length; i++) {
         for (let j = 0; j < storiesData[i].length; j++) {
           if (storiesData[i][j]?.id == story_id) {
-            return {activeStoriesIndex: i, activeChildStoryIndex: j}  
+            return { activeStoriesIndex: i, activeChildStoryIndex: j };
           }
         }
       }
-  }
-  return {}
-}
+    }
+    return {};
+  };
 
   useEffect(() => {
-      const {activeStoriesIndex, activeChildStoryIndex} = findIndexesForStory(storiesData)
-      if (activeStoriesIndex !== undefined && activeChildStoryIndex !== undefined) {
-        console.log({activeChildStoryIndex, activeStoriesIndex})
-        dispatch({
-          type: SET_ACTIVE_STORIES_INDEX,
-          payload: activeStoriesIndex,
-        });
-        dispatch({
-          type: SET_CURRENT_INDEX,
-          payload: activeChildStoryIndex,
-        });
-        !showStories && dispatch({ type: SHOW_STORIES });
-      }
-    
+    const { activeStoriesIndex, activeChildStoryIndex } =
+      findIndexesForStory(storiesData);
+    if (
+      activeStoriesIndex !== undefined &&
+      activeChildStoryIndex !== undefined
+    ) {
+      console.log({ activeChildStoryIndex, activeStoriesIndex });
+      dispatch({
+        type: SET_ACTIVE_STORIES_INDEX,
+        payload: activeStoriesIndex,
+      });
+      dispatch({
+        type: SET_CURRENT_INDEX,
+        payload: activeChildStoryIndex,
+      });
+      !showStories && dispatch({ type: SHOW_STORIES });
+    }
   }, [storiesData]);
 
   useEffect(() => {
