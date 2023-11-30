@@ -14,7 +14,11 @@ const ShareButton = ({ story_id }) => {
 
   return (
     <>
-      <SnackbarProvider autoHideDuration={1000} maxSnack={1} />
+      <SnackbarProvider
+        anchorOrigin={{ "vertical": "top", "horizontal": "center" }}
+        autoHideDuration={1000}
+        maxSnack={1}
+      />
       <button
         style={{
           width: "24px",
