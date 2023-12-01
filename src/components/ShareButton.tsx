@@ -1,12 +1,17 @@
-import { SnackbarProvider, enqueueSnackbar } from "notistack";
+import { useState } from "react";
+import styles from "../styles/shareLinkToast.module.css";
 
 const ShareButton = ({ story_id }) => {
+  const [showToast, setShowToast] = useState(false);
   const copyToClipboard = async () => {
     try {
       const currentURL = window.location.origin;
       const shareableLink = new URL(`${currentURL}/?storyId=${story_id}`);
       await navigator.clipboard.writeText(shareableLink.href);
-      enqueueSnackbar("Link copied");
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+      }, 1000);
     } catch (err) {
       console.error("Unable to copy to clipboard", err);
     }
@@ -14,11 +19,11 @@ const ShareButton = ({ story_id }) => {
 
   return (
     <>
-      <SnackbarProvider
-        anchorOrigin={{ "vertical": "top", "horizontal": "center" }}
-        autoHideDuration={1000}
-        maxSnack={1}
-      />
+      {showToast && (
+        <div className={showToast ? styles.toast : styles.toastHidden}>
+          <span> Link Copied</span>
+        </div>
+      )}
       <button
         style={{
           width: "24px",
