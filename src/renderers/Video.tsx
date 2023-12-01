@@ -57,6 +57,10 @@ export const renderer: Renderer = ({
       });
   };
 
+  React.useEffect(() => {
+    getClickdata("VIEWS")
+  },[story?.id])
+  
   return (
     <WithHeader {...{ story, globalHeader: config.header }}>
       <WithSeeMore {...{ story, action }}>
