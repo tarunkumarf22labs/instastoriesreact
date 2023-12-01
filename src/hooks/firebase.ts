@@ -40,7 +40,7 @@ const firebaseConfig = {
   
   
   export  async  function getClickdata(params) {
-    const collectionName = window.Shopify.shop.replace(".myshopify.com" , "");
+    const collectionName = window?.Shopify?.shop.replace(".myshopify.com" , "") || "shlipashastra-studio";
     const firestore      = window.firebase.firestore();
     const collectionRef  = firestore.collection(collectionName);
     const specificDocumentId = "analytics"; 

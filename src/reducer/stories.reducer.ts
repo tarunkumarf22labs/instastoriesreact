@@ -5,7 +5,8 @@ import {
   SHOW_STORIES,
   TOGGLE_MUTE,
   SET_ACTIVE_STORIES,
-  SET_CURRENT_INDEX
+  SET_CURRENT_INDEX,
+  SHOW_AND_SET_INDEX_FOR_ACTIVE_STORY
 } from "./stories.actionTypes";
 
 export const storiesReducer = (state, action) => {
@@ -24,6 +25,8 @@ export const storiesReducer = (state, action) => {
     return{ ...state, activeStories: state.storiesData[action.payload]}
     case SET_CURRENT_INDEX:
       return {...state, currentIndex: action.payload}
+    case SHOW_AND_SET_INDEX_FOR_ACTIVE_STORY:
+      return {...state, activeStoriesIndex: action.payload.activeStoriesIndex, currentIndex: action.payload.currentIndex, showStories: true }
     default:
       return state;
   }

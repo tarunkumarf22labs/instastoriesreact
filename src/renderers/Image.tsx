@@ -23,7 +23,7 @@ export const renderer: Renderer = ({ story, action, isPaused, config }) => {
   React.useEffect(() => {
     getClickdata("VIEWS")
   },[story?.id])
-  
+
   return (
     <WithHeader {...{ story, globalHeader: config.header }}>
       <WithSeeMore {...{ story, action }}>

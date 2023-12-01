@@ -21,6 +21,7 @@ import {
   SET_ACTIVE_STORIES,
   SET_ACTIVE_STORIES_INDEX,
   SET_CURRENT_INDEX,
+  SHOW_AND_SET_INDEX_FOR_ACTIVE_STORY,
   SHOW_STORIES,
   TOGGLE_MUTE,
 } from "../reducer/stories.actionTypes";
@@ -139,7 +140,7 @@ const MyStories = (props) => {
       onAllStoriesEnd: onAllStoriesEnd,
       onNext: onNextBtnClick,
       loop: true,
-      currentIndex: currentIndex,
+      currentIndex,
       header: getHeader(activeStoriesIndex),
       onAudioClick: onAudioClick,
       onCloseClick: onCloseClick,
@@ -158,6 +159,7 @@ const MyStories = (props) => {
       videoRef?.current,
       isSizeGreaterThan440,
       isMuted,
+      currentIndex,
     ]
   );
 
@@ -178,20 +180,19 @@ const MyStories = (props) => {
   useEffect(() => {
     const { activeStoriesIndex, activeChildStoryIndex } =
       findIndexesForStory(storiesData);
+
     if (
       activeStoriesIndex !== undefined &&
       activeChildStoryIndex !== undefined
     ) {
-      console.log({ activeChildStoryIndex, activeStoriesIndex });
       dispatch({
-        type: SET_ACTIVE_STORIES_INDEX,
-        payload: activeStoriesIndex,
+        type: SHOW_AND_SET_INDEX_FOR_ACTIVE_STORY,
+        payload: {
+          activeStoriesIndex,
+          currentIndex: activeChildStoryIndex,
+          showStories: true,
+        },
       });
-      dispatch({
-        type: SET_CURRENT_INDEX,
-        payload: activeChildStoryIndex,
-      });
-      !showStories && dispatch({ type: SHOW_STORIES });
     }
   }, [storiesData]);
 
@@ -200,6 +201,8 @@ const MyStories = (props) => {
   }, [activeStoriesIndex]);
 
   useEffect(() => loadFirebase(), []);
+
+  console.log({ activeStoriesIndex, currentIndex, activeStories, showStories });
 
   if (videoRef?.current) {
     videoRef.current.muted = isMuted;

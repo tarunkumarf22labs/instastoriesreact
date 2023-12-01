@@ -42,7 +42,6 @@ const ProductCard = ({
 
         setIsLoading(false);
       } catch (error) {
-        console.log({ productname });
         console.error("Error fetching data:", error);
       }
     }
