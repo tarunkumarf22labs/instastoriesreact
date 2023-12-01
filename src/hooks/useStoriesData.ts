@@ -10,7 +10,7 @@ const useStoriesData = (showReels) => {
         method: "GET",
       };
       
-      const shop = window.Shopify?.shop?.split(".")[0] || "youthrobe";
+      const shop = window.Shopify?.shop?.split(".")[0] || "shlipashastra-studio";
       const data = await fetch(
         `https://s3.f22labs.cloud/shopclips/${shop}${
           showReels ? "-reels" : ""

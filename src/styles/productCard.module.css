@@ -1,17 +1,3 @@
-.productCardsContainer {
-  position: absolute;
-  bottom: 0;
-  z-index: 2147483647;
-  max-height: fit-content;
-  height: fit-content;
-  overflow-x: hidden;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  width: 100%;
-  padding: 5px 0;
-}
-
 .productCards {
   display: flex;
   justify-content: start;
@@ -209,8 +195,8 @@
 
 .variantOverlay {
   display: flex;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   align-items: flex-end;
   justify-content: center;
 }

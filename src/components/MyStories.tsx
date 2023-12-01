@@ -10,8 +10,7 @@ import React, {
 } from "react";
 import Stories from "../components/ReactInstaStories";
 import { StoriesData } from "../interfaces";
-import { getClickdata } from "../hooks/firebase";
-import styles from "../styles/myStories.module.css";
+import { getClickdata, loadFirebase } from "../hooks/firebase";
 import { useWindowWidth } from "../hooks/useWindowSize";
 import {
   capitalizeFirstLetterOfEachWord,
@@ -21,10 +20,14 @@ import {
   HIDE_STORIES,
   SET_ACTIVE_STORIES,
   SET_ACTIVE_STORIES_INDEX,
+  SET_CURRENT_INDEX,
+  SHOW_AND_SET_INDEX_FOR_ACTIVE_STORY,
   SHOW_STORIES,
   TOGGLE_MUTE,
 } from "../reducer/stories.actionTypes";
 import { storiesReducer } from "../reducer/stories.reducer";
+
+import styles from "../styles/myStories.module.css";
 
 const MyStories = (props) => {
   const [state, dispatch] = useReducer(storiesReducer, getInitialData(props));
@@ -34,10 +37,17 @@ const MyStories = (props) => {
     activeStoriesIndex,
     activeStories,
     isMuted,
+    currentIndex,
   } = state;
   const [zIndex, setzIndex] = useState("2147483646");
   const videoRef = useRef(null);
   const isSizeGreaterThan440 = useWindowWidth();
+
+  const deviceHeight = useMemo(() => {
+    if (!isSizeGreaterThan440) {
+      return window.innerHeight;
+    }
+  }, [isSizeGreaterThan440]);
 
   const onSpecificStoriesClick = useCallback(
     (index, payload) => {
@@ -100,6 +110,7 @@ const MyStories = (props) => {
   const onCloseClick = useCallback(() => {
     dispatch({ type: HIDE_STORIES });
     hanldeUpdateZindex("close");
+    if (currentIndex != 0) dispatch({ type: SET_CURRENT_INDEX, payload: 0 });
   }, [showStories]);
 
   const getHeader = useCallback(
@@ -129,7 +140,7 @@ const MyStories = (props) => {
       onAllStoriesEnd: onAllStoriesEnd,
       onNext: onNextBtnClick,
       loop: true,
-      currentIndex: 0,
+      currentIndex,
       header: getHeader(activeStoriesIndex),
       onAudioClick: onAudioClick,
       onCloseClick: onCloseClick,
@@ -148,12 +159,50 @@ const MyStories = (props) => {
       videoRef?.current,
       isSizeGreaterThan440,
       isMuted,
+      currentIndex,
     ]
   );
+
+  const findIndexesForStory = (storiesData) => {
+    const story_id = window?.location?.search.split("=")[1];
+    if (story_id) {
+      for (let i = 0; i < storiesData.length; i++) {
+        for (let j = 0; j < storiesData[i].length; j++) {
+          if (storiesData[i][j]?.id == story_id) {
+            return { activeStoriesIndex: i, activeChildStoryIndex: j };
+          }
+        }
+      }
+    }
+    return {};
+  };
+
+  useEffect(() => {
+    const { activeStoriesIndex, activeChildStoryIndex } =
+      findIndexesForStory(storiesData);
+
+    if (
+      activeStoriesIndex !== undefined &&
+      activeChildStoryIndex !== undefined
+    ) {
+      dispatch({
+        type: SHOW_AND_SET_INDEX_FOR_ACTIVE_STORY,
+        payload: {
+          activeStoriesIndex,
+          currentIndex: activeChildStoryIndex,
+          showStories: true,
+        },
+      });
+    }
+  }, [storiesData]);
 
   useEffect(() => {
     dispatch({ type: SET_ACTIVE_STORIES, payload: activeStoriesIndex });
   }, [activeStoriesIndex]);
+
+  useEffect(() => loadFirebase(), []);
+
+  console.log({ activeStoriesIndex, currentIndex, activeStories, showStories });
 
   if (videoRef?.current) {
     videoRef.current.muted = isMuted;
@@ -170,9 +219,6 @@ const MyStories = (props) => {
           overflowX: "scroll",
           width: "100%",
           padding: "0 10px",
-          zIndex: zIndex,
-          isolation: "isolate",
-          position: "relative",
         }}
       >
         {props?.storesData.map((item, index) => {
@@ -187,7 +233,7 @@ const MyStories = (props) => {
                 padding: "10px",
               }}
               onClick={() => {
-                // getClickdata("VIEWS");
+                getClickdata("VIEWS");
                 onSpecificStoriesClick(index, item);
                 hanldeUpdateZindex("open");
               }}
@@ -257,19 +303,10 @@ const MyStories = (props) => {
       </div>
       {showStories && (
         <div
+          className={styles.specialContainer}
           style={{
-            display: "flex",
-            justifyContent: "center",
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            background: "rgba(0, 0, 0, 0.4)",
-            backdropFilter: "blur(10px)",
             zIndex: zIndex,
-            isolation: "isolate",
-            alignItems: "center",
+            height: deviceHeight || "100%",
           }}
         >
           <Stories {...storiesProps} />

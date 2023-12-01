@@ -33,7 +33,6 @@ const withSeeMore: React.FC<
           style={{
             position: "absolute",
             bottom: 0,
-            zIndex: 2147483647,
             maxHeight: "fit-content",
             height: "fit-content",
             overflowX: "hidden",

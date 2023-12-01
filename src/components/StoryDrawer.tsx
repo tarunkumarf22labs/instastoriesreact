@@ -8,6 +8,7 @@ import Loader from "./Loader";
 import { getClickdata } from "../hooks/firebase";
 import { URL } from "../constants";
 import styles from "../styles/storyDrawer.module.css"
+import { handledata } from "../util/common";
 
 function StoryDrawer({
   setIsOpen,
@@ -20,15 +21,7 @@ function StoryDrawer({
   isOpen: boolean;
   productname: string;
 }) {
-  
-  function handledata({product}) {
-    return {
-      id: product.id,
-      title: product.title,
-      variants: product.variants,
-      images: product.images
-    };
-  };
+
   const [product, setProduct] = useState<any>();
   const [variant, setVariant] = useState("");
   const [textforCart, setTextforCart] = useState("Add to cart");
@@ -56,54 +49,11 @@ function StoryDrawer({
     };
   }, [productname]);
 
-  // const handleAddToCart = () => {
-  //   setTextforCart(<Loader/>)
-    
-  //   const url = `${URL}/cart/add`;
-
-  //   const requestBody = {
-  //     Style: "Limited-2",
-  //     quantity: 1,
-  //     form_type: "product",
-  //     utf8: "✓",
-  //     id: variant.id,
-  //     "product-id" : product.id,
-  //     sections:
-  //       "cart-notification-product,cart-notification-button,cart-icon-bubble",
-  //     sections_url: "/products/gadwal-limited",
-  //   };
-
-  //   const jsonRequestBody = JSON.stringify(requestBody);
-
-  //   const requestOptions = {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json", // Set the content type to JSON
-  //     },
-  //     body: jsonRequestBody, // Set the request body as the JSON string
-  //   };
-
-  //   fetch(url, requestOptions)
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! Status: ${response.status}`);
-  //       }
-  //       return response.json(); // Parse the response JSON if needed
-  //     })
-  //     .then((data) => {
-  //       // Handle the response data here
-  //       setTextforCart("added to cart");
-  //     })
-  //     .catch((error) => {
-  //       // Handle any errors here
-  //       setTextforCart("added to cart");
-  //       console.error(error);
-  //     });
-  // };
   const handleAddToCart = () => {
     setTextforCart(<Loader/>);
   
-    const url = `https://deciwood.com/cart/add`;
+    const shop = window?.Shopify?.shop.split(".")[0];
+    const url = `https://${shop}.com/cart/add`;
   
     const formData = new FormData();
     formData.append("Style", "Limited-2");
@@ -178,7 +128,7 @@ function StoryDrawer({
               href={`${URL}/cart/${variant.id}:1?checkout`}
               className={styles.atcButton}
               onClick={() => {
-                getClickdata("BUYNOW");
+                getClickdata("BUY_NOW");
               }}
             >
               BUY NOW

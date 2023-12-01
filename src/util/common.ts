@@ -15,7 +15,7 @@ function capitalizeFirstLetter(inputString) {
 }
 
 export const capitalizeFirstLetterOfEachWord = (str) => {
-  if(!str) return ""
+  if (!str) return "";
   const words = str.split(" ");
   for (let i = 0; i < words.length; i++) {
     words[i] = capitalizeFirstLetter(words[i]);
@@ -30,12 +30,20 @@ const generateStoriesData = (storiesData) =>
       url: item?.storiescontnet,
       type: item?.storiescontnet.includes("mp4") ? "video" : "image",
     }))
-);
+  );
 
 export const getInitialData = (props) => ({
-  storiesData:  generateStoriesData(props?.storesData),
+  storiesData: generateStoriesData(props?.storesData),
   showStories: false,
   activeStoriesIndex: 0,
   activeStories: [],
   isMuted: false,
-})
+  currentIndex: 0
+});
+
+export const handledata = ({ product }) => ({
+  id: product.id,
+  title: product.title,
+  variants: product.variants,
+  images: product.images,
+});
