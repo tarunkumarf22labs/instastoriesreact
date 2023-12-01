@@ -68,6 +68,7 @@ const ProductCard = ({
     setIsOpen((prev) => !prev);
     stopProgress();
     videoRef?.current.pause();
+    getClickdata("KNOW_MORE");
   };
 
   // variant
@@ -162,10 +163,7 @@ const ProductCard = ({
           <div
             className={styles.productCardInfo}
             onMouseEnter={() => triggers.setProductId(productname)}
-            onClick={() => {
-              handleOpenProductDetails();
-              videoRef.current.pause();
-            }}
+            onClick={() => handleOpenProductDetails()}
           >
             <span className={styles.productCardInfoTitle}>
               {getContentString(product?.title)}
@@ -199,11 +197,7 @@ const ProductCard = ({
         )} */}
       {/* {isVariantSelectorOpen || product?.variants?.length < 2 ? ( */}
       <button
-        onClick={() => {
-          handleOpenProductDetails();
-          videoRef?.current.pause();
-          getClickdata("ADD_TO_CART");
-        }}
+        onClick={() => handleOpenProductDetails()}
         className={styles.addToCartProductCard}
       >
         {/* {textforCart} */}

@@ -128,7 +128,7 @@ function StoryDrawer({
               href={`${URL}/cart/${variant.id}:1?checkout`}
               className={styles.atcButton}
               onClick={() => {
-                getClickdata("BUYNOW");
+                getClickdata("BUY_NOW");
               }}
             >
               BUY NOW

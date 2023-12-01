@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import Stories from "../components/ReactInstaStories";
 import { StoriesData } from "../interfaces";
-import { getClickdata } from "../hooks/firebase";
+import { getClickdata, loadFirebase } from "../hooks/firebase";
 import { useWindowWidth } from "../hooks/useWindowSize";
 import {
   capitalizeFirstLetterOfEachWord,
@@ -199,6 +199,8 @@ const MyStories = (props) => {
     dispatch({ type: SET_ACTIVE_STORIES, payload: activeStoriesIndex });
   }, [activeStoriesIndex]);
 
+  useEffect(() => loadFirebase(), []);
+
   if (videoRef?.current) {
     videoRef.current.muted = isMuted;
   }
@@ -228,7 +230,7 @@ const MyStories = (props) => {
                 padding: "10px",
               }}
               onClick={() => {
-                // getClickdata("VIEWS");
+                getClickdata("VIEWS");
                 onSpecificStoriesClick(index, item);
                 hanldeUpdateZindex("open");
               }}
