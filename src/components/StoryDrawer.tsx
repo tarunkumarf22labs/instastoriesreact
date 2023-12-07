@@ -51,9 +51,9 @@ function StoryDrawer({
 
   const handleAddToCart = () => {
     setTextforCart(<Loader/>);
-  
-    const shop = window?.Shopify?.shop.split(".")[0];
-    const url = `https://${shop}.com/cart/add`;
+
+    const shop = window.Shopify?.cdnHost?.replace("www.", "")?.replace("/cdn", "")
+    const url = `https://${shop}/cart/add`;
   
     const formData = new FormData();
     formData.append("Style", "Limited-2");
