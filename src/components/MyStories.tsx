@@ -210,6 +210,21 @@ const MyStories = (props) => {
 
   return (
     <>
+      <h2
+        style={{
+          marginTop: 0,
+          textTransform: "uppercase",
+          fontWeight: 600,
+          width: "100%",
+          color: "#000",
+          textAlign: "center",
+          fontSize: "16px",
+          margin: "3rem 0 2rem",
+        }}
+      >
+        🎥 Experience Beyond Words! 🌟
+      </h2>
+
       <div
         className={styles.myStoriesContainer}
         style={{
@@ -301,6 +316,22 @@ const MyStories = (props) => {
           );
         })}
       </div>
+      <h2
+        style={{
+          fontWeight: 500,
+          width: "100%",
+          color: "rgb(0, 0, 0)",
+          textAlign: "center",
+          fontSize: "14px",
+          margin: "1rem 0",
+          lineHeight: 1.5,
+        }}
+      >
+        🔗 Click here to Watch, Relate, and Revel in a world where tradition
+        meets passion. Let's not just talk about it; let's experience it
+        together. 🌸
+      </h2>
+
       {showStories && (
         <div
           className={styles.specialContainer}
