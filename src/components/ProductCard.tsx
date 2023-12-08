@@ -67,7 +67,7 @@ const ProductCard = ({
     setIsOpen((prev) => !prev);
     stopProgress();
     videoRef?.current.pause();
-    getClickdata("KNOW_MORE");
+    getClickdata("SHOP_NOW");
   };
 
   // variant
@@ -200,7 +200,7 @@ const ProductCard = ({
         className={styles.addToCartProductCard}
       >
         {/* {textforCart} */}
-        Know More
+        Shop Now
       </button>
       {/* ) : ( */}
       {/* <button
