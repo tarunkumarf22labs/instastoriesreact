@@ -34,7 +34,7 @@ function StoryDrawer({
           `${URL}/products/${productname}.json`,
           { redirect: "follow", signal: Abortcontoller.signal }
         );
-        const value = await data.json();        
+        const value = await data.json();  
         const relevantData = handledata(value);
         setProduct(relevantData);
         setVariant(relevantData?.variants[0]);
@@ -48,6 +48,8 @@ function StoryDrawer({
       Abortcontoller.abort();
     };
   }, [productname]);
+
+  
 
   const handleAddToCart = () => {
     setTextforCart(<Loader/>);

@@ -202,8 +202,6 @@ const MyStories = (props) => {
 
   useEffect(() => loadFirebase(), []);
 
-  console.log({ activeStoriesIndex, currentIndex, activeStories, showStories });
-
   if (videoRef?.current) {
     videoRef.current.muted = isMuted;
   }

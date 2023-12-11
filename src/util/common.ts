@@ -1,7 +1,7 @@
 export const getDataBasedOnPathname = (path, dataObj) => {
   if (!!dataObj && path.length) {
     let dataArr = dataObj[path];
-    if (dataArr.length) return dataArr;
+    if (dataArr?.length) return dataArr;
     else return dataObj["/*"];
   }
   return [];
