@@ -5,7 +5,6 @@ import { GlobalCtx, Renderer, Tester } from "./../interfaces";
 import WithHeader from "./wrappers/withHeader";
 import WithSeeMore from "./wrappers/withSeeMore";
 import GlobalContext from "../context/Global";
-import { getClickdata } from "../hooks/firebase";
 
 export const renderer: Renderer = ({
   story,
@@ -57,10 +56,6 @@ export const renderer: Renderer = ({
         });
       });
   };
-
-  React.useEffect(() => {
-    getClickdata("VIEWS")
-  },[story?.id])
 
   return (
     <WithHeader {...{ story, globalHeader: config.header }}>

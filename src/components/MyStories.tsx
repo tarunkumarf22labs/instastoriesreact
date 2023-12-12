@@ -17,13 +17,13 @@ import {
   getInitialData,
 } from "../util/common";
 import {
-  HIDE_STORIES,
-  SET_ACTIVE_STORIES,
-  SET_ACTIVE_STORIES_INDEX,
+  SET_ACTIVE_STORIES_AND_INDEX,
   SET_CURRENT_INDEX,
+  SET_ZINDEX,
   SHOW_AND_SET_INDEX_FOR_ACTIVE_STORY,
-  SHOW_STORIES,
   TOGGLE_MUTE,
+  SET_ACTIVE_STORIES_INDEX_ADN_SHOW,
+  TOGGLE_SHOW_STORIES,
 } from "../reducer/stories.actionTypes";
 import { storiesReducer } from "../reducer/stories.reducer";
 
@@ -38,8 +38,9 @@ const MyStories = (props) => {
     activeStories,
     isMuted,
     currentIndex,
+    zIndex,
   } = state;
-  const [zIndex, setzIndex] = useState("2147483646");
+
   const videoRef = useRef(null);
   const isSizeGreaterThan440 = useWindowWidth();
 
@@ -49,19 +50,16 @@ const MyStories = (props) => {
     }
   }, [isSizeGreaterThan440]);
 
-  const onSpecificStoriesClick = useCallback(
-    (index, payload) => {
-      dispatch({ type: SET_ACTIVE_STORIES_INDEX, payload: index });
-      !showStories && dispatch({ type: SHOW_STORIES });
-    },
-    [showStories]
-  );
+  const onSpecificStoriesClick = useCallback((index, payload) => {
+    getClickdata("VIEWS")
+    dispatch({ type: SET_ACTIVE_STORIES_INDEX_ADN_SHOW, payload: index });
+  }, []);
 
   const onPreviousBtnClick = useCallback(
     (currentStoryIndex) => {
       if (currentStoryIndex === 0 && activeStoriesIndex !== 0) {
         dispatch({
-          type: SET_ACTIVE_STORIES_INDEX,
+          type: SET_ACTIVE_STORIES_AND_INDEX,
           payload: activeStoriesIndex - 1,
         });
       }
@@ -69,22 +67,25 @@ const MyStories = (props) => {
     [activeStoriesIndex]
   );
 
-  const hanldeUpdateZindex = (action) => {
-    if (action === "open") {
-      setzIndex("2147483647");
-    } else {
-      setzIndex("2147483646");
-    }
-  };
+  const hanldeUpdateZindex = useCallback(
+    (action) => {
+      if (action === "open") {
+        dispatch({ type: SET_ZINDEX, payload: "2147483647" });
+      } else {
+        dispatch({ type: SET_ZINDEX, payload: "2147483646" });
+      }
+    },
+    [zIndex]
+  );
 
   const onAllStoriesEnd = useCallback(() => {
     if (activeStoriesIndex === storiesData.length - 1) {
-      dispatch({ type: SET_ACTIVE_STORIES_INDEX, payload: 0 });
+      dispatch({ type: SET_ACTIVE_STORIES_AND_INDEX, payload: 0 });
       return;
     }
     if (activeStoriesIndex < storiesData.length) {
       dispatch({
-        type: SET_ACTIVE_STORIES_INDEX,
+        type: SET_ACTIVE_STORIES_AND_INDEX,
         payload: activeStoriesIndex + 1,
       });
     }
@@ -96,7 +97,7 @@ const MyStories = (props) => {
         currentStoryIndex === activeStories.length - 1 &&
         activeStoriesIndex === storiesData.length - 1
       ) {
-        dispatch({ type: SET_ACTIVE_STORIES_INDEX, payload: 0 });
+        dispatch({ type: SET_ACTIVE_STORIES_AND_INDEX, payload: 0 });
         return;
       }
     },
@@ -108,7 +109,7 @@ const MyStories = (props) => {
   }, [isMuted]);
 
   const onCloseClick = useCallback(() => {
-    dispatch({ type: HIDE_STORIES });
+    dispatch({ type: TOGGLE_SHOW_STORIES, payload: false });
     hanldeUpdateZindex("close");
     if (currentIndex != 0) dispatch({ type: SET_CURRENT_INDEX, payload: 0 });
   }, [showStories]);
@@ -163,19 +164,22 @@ const MyStories = (props) => {
     ]
   );
 
-  const findIndexesForStory = (storiesData) => {
-    const story_id = window?.location?.search.split("=")[1];
-    if (story_id) {
-      for (let i = 0; i < storiesData.length; i++) {
-        for (let j = 0; j < storiesData[i].length; j++) {
-          if (storiesData[i][j]?.id == story_id) {
-            return { activeStoriesIndex: i, activeChildStoryIndex: j };
+  const findIndexesForStory = useCallback(
+    (storiesData) => {
+      const story_id = window?.location?.search.split("=")[1];
+      if (story_id) {
+        for (let i = 0; i < storiesData.length; i++) {
+          for (let j = 0; j < storiesData[i].length; j++) {
+            if (storiesData[i][j]?.id == story_id) {
+              return { activeStoriesIndex: i, activeChildStoryIndex: j };
+            }
           }
         }
       }
-    }
-    return {};
-  };
+      return {};
+    },
+    [storiesData]
+  );
 
   useEffect(() => {
     const { activeStoriesIndex, activeChildStoryIndex } =
@@ -196,13 +200,7 @@ const MyStories = (props) => {
     }
   }, [storiesData]);
 
-  useEffect(() => {
-    dispatch({ type: SET_ACTIVE_STORIES, payload: activeStoriesIndex });
-  }, [activeStoriesIndex]);
-
-  useEffect(() => loadFirebase(), []);
-
-  console.log({ activeStoriesIndex, currentIndex, activeStories, showStories });
+  useEffect(() => loadFirebase(), [storiesData]);
 
   if (videoRef?.current) {
     videoRef.current.muted = isMuted;
@@ -233,7 +231,6 @@ const MyStories = (props) => {
                 padding: "10px",
               }}
               onClick={() => {
-                getClickdata("VIEWS");
                 onSpecificStoriesClick(index, item);
                 hanldeUpdateZindex("open");
               }}

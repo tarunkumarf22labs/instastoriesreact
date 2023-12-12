@@ -10,6 +10,7 @@ import {
 } from "./../interfaces";
 import useIsMounted from "./../util/use-is-mounted";
 import { usePreLoader } from "../util/usePreLoader";
+import { getClickdata } from "../hooks/firebase";
 
 export default function () {
   const [currentId, setCurrentId] = useState<number>(0);
@@ -91,6 +92,7 @@ export default function () {
   };
 
   const previous = (currentStoryIndex) => {
+    getClickdata("VIEWS")
     if (onPrevious != undefined) {
       onPrevious(currentStoryIndex);
     }
@@ -112,6 +114,7 @@ export default function () {
   };
 
   const updateNextStoryIdForLoop = () => {
+    getClickdata("VIEWS")
     setCurrentIdWrapper((prev) => {
       if (prev >= stories.length - 1) {
         onAllStoriesEnd && onAllStoriesEnd(currentId, stories);
@@ -121,6 +124,7 @@ export default function () {
   };
 
   const updateNextStoryId = () => {
+    getClickdata("VIEWS")
     setCurrentIdWrapper((prev) => {
       if (prev < stories.length - 1) return prev + 1;
       onAllStoriesEnd && onAllStoriesEnd(currentId, stories);
