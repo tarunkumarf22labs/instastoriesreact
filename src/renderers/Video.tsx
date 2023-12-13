@@ -35,6 +35,7 @@ export const renderer: Renderer = ({
 
   const onWaiting = () => {
     action("pause", true);
+    setLoaded(false)
   };
 
   const onPlaying = () => {
@@ -57,6 +58,11 @@ export const renderer: Renderer = ({
       });
   };
 
+  const onCanPlay = React.useCallback(() => {
+    setLoaded(true)
+    vid.current.play().catch(() => setLoaded(false))
+  }, [vid, loaded])
+
   return (
     <WithHeader {...{ story, globalHeader: config.header }}>
       <WithSeeMore {...{ story, action }}>
@@ -73,6 +79,7 @@ export const renderer: Renderer = ({
             muted={muted}
             autoPlay
             webkit-playsinline="true"
+            onCanPlay={onCanPlay}
           />
           {!loaded && (
             <div
@@ -82,7 +89,7 @@ export const renderer: Renderer = ({
                 position: "absolute",
                 left: 0,
                 top: 0,
-                background: "rgba(0, 0, 0, 0.9)",
+                background: "rgba(0, 0, 0, 0)",
                 zIndex: 9,
                 display: "flex",
                 justifyContent: "center",
