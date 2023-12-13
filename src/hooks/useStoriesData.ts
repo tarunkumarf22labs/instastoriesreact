@@ -13,7 +13,7 @@ const useStoriesData = (showReels) => {
           method: "GET",
         };
 
-        const shop = window.Shopify?.shop?.split(".")[0] || "hustlezy";
+        const shop = window.Shopify?.shop?.split(".")[0] || "ambra-maddalena";
         const response = await fetch(
           `https://s3.f22labs.cloud/shopclips/${shop}${
             showReels ? "-reels" : ""
