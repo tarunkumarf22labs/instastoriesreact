@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import  { useContext } from "react";
 import { StoryProps, GlobalCtx } from "./../interfaces";
 import GlobalContext from "./../context/Global";
 
@@ -23,7 +23,9 @@ const Story = (props: StoryProps) => {
   };
 
   const getStoryContent = () => {
-    let InnerContent = props.story.content;
+    console.log("props?.story::", props?.story);
+    console.log("props?.story?.content::", props);
+    let InnerContent = props?.story?.content;
     let config = { width, height, loader, header, storyStyles };
     return (
       <InnerContent
@@ -38,11 +40,13 @@ const Story = (props: StoryProps) => {
 
   return (
     <div
+      onScroll={e=>{console.log("scroll loading...",e)}}
       style={{
         ...styles.story,
         ...storyInnerContainerStyles,
         width: width,
         height: height,
+        
       }}
     >
       {getStoryContent()}

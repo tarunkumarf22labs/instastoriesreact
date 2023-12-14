@@ -19,6 +19,7 @@ const useStoriesData = (showReels) => {
       );
       
       const res = await data.json();
+      console.log("res::;",res)
       const resolvedData = {
         properties: res?.properties,
         stories: getDataBasedOnPathname(window.location.pathname, res?.data),

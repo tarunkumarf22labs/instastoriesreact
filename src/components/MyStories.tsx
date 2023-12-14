@@ -25,7 +25,7 @@ import {
   SHOW_STORIES,
   TOGGLE_MUTE,
 } from "../reducer/stories.actionTypes";
-import { storiesReducer } from "../reducer/stories.reducer";
+import storiesReducer from "../reducer/stories.reducer";
 
 import styles from "../styles/myStories.module.css";
 
@@ -38,6 +38,7 @@ const MyStories = (props) => {
     activeStories,
     isMuted,
     currentIndex,
+    allStories,
   } = state;
   const [zIndex, setzIndex] = useState("2147483646");
   const videoRef = useRef(null);
@@ -56,6 +57,8 @@ const MyStories = (props) => {
     },
     [showStories]
   );
+
+  console.log("currentIndex::123", currentIndex);
 
   const onPreviousBtnClick = useCallback(
     (currentStoryIndex) => {
@@ -78,6 +81,8 @@ const MyStories = (props) => {
   };
 
   const onAllStoriesEnd = useCallback(() => {
+    console.log("all stories::");
+
     if (activeStoriesIndex === storiesData.length - 1) {
       dispatch({ type: SET_ACTIVE_STORIES_INDEX, payload: 0 });
       return;
@@ -89,6 +94,13 @@ const MyStories = (props) => {
       });
     }
   }, [activeStoriesIndex, storiesData]);
+
+  console.log(
+    "activeStories:::",
+    activeStories,
+    "storiesData.data",
+    storiesData.length
+  );
 
   const onNextBtnClick = useCallback(
     (currentStoryIndex) => {
@@ -121,6 +133,22 @@ const MyStories = (props) => {
     [activeStoriesIndex]
   );
 
+  const handleScroll = (event) => {
+    const { deltaY } = event;
+    console.log("deltaY :: " + deltaY);
+
+    if (deltaY > 0) {
+      // Scrolling down, play the next video
+      // debounce(() => next({ isSkippedByUser: true }), 2000);
+      next({ isSkippedByUser: true });
+    } else if (deltaY < 0) {
+      // Scrolling up, play the previous video
+      console.log("previos::::");
+      // debounce(() => previous(currentId), 10);
+      onPreviousBtnClick(currentId)
+    }
+  };
+
   const getAlignmentOfStories = useMemo(() => {
     const numOfStories = props?.storesData?.length;
     if (!isSizeGreaterThan440 && numOfStories > 4) {
@@ -139,6 +167,7 @@ const MyStories = (props) => {
       onPrevious: onPreviousBtnClick,
       onAllStoriesEnd: onAllStoriesEnd,
       onNext: onNextBtnClick,
+      allStories: storiesData,
       loop: true,
       currentIndex,
       header: getHeader(activeStoriesIndex),
@@ -160,6 +189,7 @@ const MyStories = (props) => {
       isSizeGreaterThan440,
       isMuted,
       currentIndex,
+      storiesData,
     ]
   );
 
@@ -208,6 +238,20 @@ const MyStories = (props) => {
 
   return (
     <>
+      <h2
+        style={{
+          marginTop: 0,
+          textTransform: "uppercase",
+          fontWeight: 600,
+          width: "100%",
+          color: "#000",
+          textAlign: "center",
+          fontSize: "16px",
+          margin: "3rem 0 2rem",
+        }}
+      >
+        🎥 Tap any reel to Shop Now 🌟
+      </h2>
       <div
         className={styles.myStoriesContainer}
         style={{

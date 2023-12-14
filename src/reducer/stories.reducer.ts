@@ -9,7 +9,7 @@ import {
   SHOW_AND_SET_INDEX_FOR_ACTIVE_STORY
 } from "./stories.actionTypes";
 
-export const storiesReducer = (state, action) => {
+ const storiesReducer = (state, action) => {
   switch (action.type) {
     case SET_STORIES_DATA:
       return { ...state, storiesData: action.payload };
@@ -31,3 +31,6 @@ export const storiesReducer = (state, action) => {
       return state;
   }
 };
+
+
+export default storiesReducer;

@@ -57,6 +57,7 @@ export interface GlobalCtx {
   keyboardNavigation?: boolean;
   preventDefault?: boolean;
   preloadCount?: number;
+  allStories?: [];
 }
 
 type NumberOrString = number | string;

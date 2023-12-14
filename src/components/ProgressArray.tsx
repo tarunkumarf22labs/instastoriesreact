@@ -23,7 +23,7 @@ export default () => {
     progressContainerStyles,
   } = useContext<GlobalCtx>(GlobalContext);
   const { stories } = useContext<StoriesContextInterface>(StoriesContext);
-
+console.log("progress:::",stories,currentId)
   useEffect(() => {
     setCount(0);
   }, [currentId, stories]);
@@ -69,10 +69,17 @@ export default () => {
     onStoryEnd && onStoryEnd(currentId, stories[currentId]);
   };
 
+  // const getCurrentInterval = () => {
+  //   if (stories[currentId].type === "video") return videoDuration;
+  //   if (typeof stories[currentId].duration === "number")
+  //     return stories[currentId].duration;
+  //   return defaultInterval;
+  // };
+
   const getCurrentInterval = () => {
-    if (stories[currentId].type === "video") return videoDuration;
-    if (typeof stories[currentId].duration === "number")
-      return stories[currentId].duration;
+    if (stories[0].type === "video") return videoDuration;
+    if (typeof stories[0].duration === "number")
+      return stories[0].duration;
     return defaultInterval;
   };
 

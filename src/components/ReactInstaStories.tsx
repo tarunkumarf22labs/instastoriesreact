@@ -68,6 +68,7 @@ const ReactInstaStories = function (props: ReactInstaStoriesProps) {
     onAudioClick: props.onAudioClick,
     videoRef: props.videoRef,
     isMuted: props.isMuted,
+    allStories: props.allStories
   };
   const [stories, setStories] = useState<{ stories: Story[] }>({
     stories: generateStories(props.stories, renderers),
@@ -80,7 +81,7 @@ const ReactInstaStories = function (props: ReactInstaStoriesProps) {
   return (
     <GlobalContext.Provider value={context}>
       <StoriesContext.Provider value={stories}>
-        <Container />
+        <Container/>
       </StoriesContext.Provider>
     </GlobalContext.Provider>
   );

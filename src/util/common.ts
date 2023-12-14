@@ -38,7 +38,8 @@ export const getInitialData = (props) => ({
   activeStoriesIndex: 0,
   activeStories: [],
   isMuted: false,
-  currentIndex: 0
+  currentIndex: 0,
+  allStories:0
 });
 
 export const handledata = ({ product }) => ({
