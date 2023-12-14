@@ -245,10 +245,11 @@ const MyStories = (props) => {
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: props.showReels ? "" : getAlignmentOfStories,
+          justifyContent: getAlignmentOfStories,
           overflowX: "scroll",
           width: "100%",
           padding: "0 10px",
+          
         }}
       >
         {props?.storesData.map((item, index) => {

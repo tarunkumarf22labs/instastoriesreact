@@ -1,6 +1,5 @@
 export const URL = `https://${window?.Shopify?.shop}`
 
-
 export const CURRENCY_VS_SYMBOL = {
   AUD: '$'
 }
