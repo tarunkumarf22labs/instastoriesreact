@@ -23,7 +23,7 @@ const ProductCard = ({
   const [variant, setVariant] = useState("");
   const [isVariantSelectorOpen, setIsVariantSelectorOpen] = useState(false);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
-  const [textforCart, setTextforCart] = useState("Add to cart");
+  const [textforCart, setTextforCart] = useState("Buy Now");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const ProductCard = ({
     fetchData();
     setSelectedVariantIndex(0);
     setIsVariantSelectorOpen(false);
-    setTextforCart("Add to cart");
+    setTextforCart("Buy Now");
     return () => {
       Abortcontoller.abort();
     };
