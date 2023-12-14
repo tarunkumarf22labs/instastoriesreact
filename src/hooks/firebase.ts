@@ -43,7 +43,7 @@ const firebaseConfig = {
     const collectionName = window?.Shopify?.shop.replace(".myshopify.com" , "") || "shlipashastra-studio";
     const firestore      = window.firebase.firestore();
     const collectionRef  = firestore.collection(collectionName);
-    const specificDocumentId = "analytics"; 
+    const specificDocumentId = "analytics-prod"; 
     const specificDocumentRef = collectionRef.doc(specificDocumentId);
     
     const viewsSubcollection = specificDocumentRef.collection(params);
