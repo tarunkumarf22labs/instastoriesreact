@@ -18,11 +18,12 @@ const App: React.FC<AppProps> = (props) => {
   const { data, loading, error } = useStoriesData(showReels);
 
   if (loading) {
-    return <div></div>;
+    return null
   }
 
   if (error) {
-    return <div style={{ textAlign: "center" }}>Error: {error}</div>; // Display an error message
+    console.error(error)
+    return null
   }
 
   const { stories, properties } = data;
