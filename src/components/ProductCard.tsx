@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import { getClickdata } from "../hooks/firebase";
 import styles from "../styles/productCard.module.css";
-import { URL, logoSrc } from "../constants";
+import { CURRENCY_VS_SYMBOL, URL, logoSrc } from "../constants";
 import { handledata } from "../util/common";
 
 type Props = {
@@ -172,7 +172,7 @@ const ProductCard = ({
               {getContentString(product?.title)}
             </span>
             <span className={styles.productCardInfoPrice}>
-              Rs.{product?.variants[0].price}
+            {CURRENCY_VS_SYMBOL[window?.Shopify?.currency?.active] || "Rs."} {product?.variants[0].price}
             </span>
           </div>
         </div>

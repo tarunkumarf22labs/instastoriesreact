@@ -23,7 +23,6 @@ export default () => {
     progressContainerStyles,
   } = useContext<GlobalCtx>(GlobalContext);
   const { stories } = useContext<StoriesContextInterface>(StoriesContext);
-console.log("progress:::",stories,currentId)
   useEffect(() => {
     setCount(0);
   }, [currentId, stories]);

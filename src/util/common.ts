@@ -24,7 +24,7 @@ export const capitalizeFirstLetterOfEachWord = (str) => {
 };
 
 const generateStoriesData = (storiesData) =>
-  storiesData.map(({ childstories }) =>
+  storiesData?.map(({ childstories }) =>
     childstories.map((item) => ({
       ...item,
       url: item?.storiescontnet,
@@ -39,7 +39,7 @@ export const getInitialData = (props) => ({
   activeStories: [],
   isMuted: false,
   currentIndex: 0,
-  allStories:0
+  zIndex: "2147483646"
 });
 
 export const handledata = ({ product }) => ({

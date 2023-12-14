@@ -5,3 +5,41 @@
   font-family: inherit;
   -webkit-tap-highlight-color: transparent;
 }
+
+/* Hide video controls container */
+video::-webkit-media-controls {
+  display: none !important; /* WebKit/Blink browsers (Chrome, Safari) */
+}
+
+video::-webkit-media-controls-panel {
+  display: none !important; /* WebKit/Blink browsers (Chrome, Safari) */
+}
+
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-start-playback-button {
+  display: none !important; /* WebKit/Blink browsers (Chrome, Safari) */
+}
+
+video::-webkit-media-controls-timeline,
+video::-webkit-media-controls-current-time-display,
+video::-webkit-media-controls-time-remaining-display,
+video::-webkit-media-controls-mute-button,
+video::-webkit-media-controls-volume-slider,
+video::-webkit-media-controls-volume-slider-container,
+video::-webkit-media-controls-fullscreen-button {
+  display: none !important; /* WebKit/Blink browsers (Chrome, Safari) */
+}
+
+video::-moz-media-controls {
+  display: none !important; /* Firefox */
+}
+
+/* For browsers that support the "::media-controls" pseudo-element */
+video::media-controls {
+  display: none !important;
+}
+
+/* Optional: Set pointer-events to none to disable user interaction with the hidden video */
+video {
+  pointer-events: none;
+}

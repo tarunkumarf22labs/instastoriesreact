@@ -5,7 +5,6 @@ import { GlobalCtx, Renderer, Tester } from "./../interfaces";
 import WithHeader from "./wrappers/withHeader";
 import WithSeeMore from "./wrappers/withSeeMore";
 import GlobalContext from "../context/Global";
-import { getClickdata } from "../hooks/firebase";
 
 export const renderer: Renderer = ({
   story,
@@ -36,6 +35,7 @@ export const renderer: Renderer = ({
 
   const onWaiting = () => {
     action("pause", true);
+    setLoaded(false)
   };
 
   const onPlaying = () => {
@@ -58,9 +58,10 @@ export const renderer: Renderer = ({
       });
   };
 
-  React.useEffect(() => {
-    getClickdata("VIEWS")
-  },[story?.id])
+  const onCanPlay = React.useCallback(() => {
+    setLoaded(true)
+    vid.current.play().catch(() => setLoaded(false))
+  }, [vid, loaded])
 
   return (
     <WithHeader {...{ story, globalHeader: config.header }}>
@@ -78,6 +79,7 @@ export const renderer: Renderer = ({
             muted={muted}
             autoPlay
             webkit-playsinline="true"
+            onCanPlay={onCanPlay}
           />
           {!loaded && (
             <div
@@ -87,7 +89,7 @@ export const renderer: Renderer = ({
                 position: "absolute",
                 left: 0,
                 top: 0,
-                background: "rgba(0, 0, 0, 0.9)",
+                background: "rgba(0, 0, 0, 0)",
                 zIndex: 9,
                 display: "flex",
                 justifyContent: "center",

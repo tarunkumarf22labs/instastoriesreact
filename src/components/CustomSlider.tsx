@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { ImageElement } from "../types";
 import { getClickdata } from "../hooks/firebase";
-import { URL } from "../constants";
+import { CURRENCY_VS_SYMBOL, URL } from "../constants";
 import styles from "../styles/customSlider.module.css";
 
 function Customslider({
@@ -97,7 +97,7 @@ function Customslider({
               color:'black'
             }}
           >
-            Rs. {productPrice}{" "}
+            {CURRENCY_VS_SYMBOL[window?.Shopify?.currency?.active] || "Rs."} {productPrice}{" "}
           </h5>
         </div>
       </div>

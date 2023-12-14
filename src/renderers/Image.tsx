@@ -5,7 +5,6 @@ import Spinner from "../components/Spinner";
 import { Renderer, Tester } from "./../interfaces";
 import WithHeader from "./wrappers/withHeader";
 import WithSeeMore from "./wrappers/withSeeMore";
-import { getClickdata } from "../hooks/firebase";
 
 export const renderer: Renderer = ({ story, action, isPaused, config }) => {
   const [loaded, setLoaded] = React.useState(false);
@@ -19,10 +18,6 @@ export const renderer: Renderer = ({ story, action, isPaused, config }) => {
     setLoaded(true);
     action("play");
   };
-
-  React.useEffect(() => {
-    getClickdata("VIEWS")
-  },[story?.id])
 
   return (
     <WithHeader {...{ story, globalHeader: config.header }}>

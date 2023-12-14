@@ -28,6 +28,7 @@ function StoryDrawer({
 
   useEffect(() => {
     const Abortcontoller = new AbortController();
+    if(!productname) return
     async function fetchData() {
       try {
         const data = await fetch(
