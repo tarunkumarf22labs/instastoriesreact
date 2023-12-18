@@ -46,12 +46,12 @@ const withSeeMore: React.FC<
           }}
         >
           <div
+            className={styles.hideScrollBar}
             style={{
               display: "flex",
               justifyContent: "start",
               alignItems: "flex-end",
               gap: "5px",
-              overflowX: "auto",
               height: "auto",
               paddingLeft: "10px",
             }}

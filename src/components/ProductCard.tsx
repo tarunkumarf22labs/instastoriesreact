@@ -152,8 +152,8 @@ const ProductCard = ({
               alt={product?.title}
               loading="eager"
               style={{
-                width: "100px",
-                height: "100px",
+                width: "80px",
+                height: "80px",
                 borderRadius: "5px",
                 objectFit: "contain",
               }}

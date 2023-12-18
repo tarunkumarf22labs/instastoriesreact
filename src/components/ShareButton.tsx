@@ -34,6 +34,7 @@ const ShareButton = ({ story_id }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          cursor:'pointer'
         }}
         onClick={copyToClipboard}
       >

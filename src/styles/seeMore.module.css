@@ -17,3 +17,26 @@
     height: 797px;
     transform: translateY(0%);
   }
+
+  /* Apply styles to hide scrollbar */
+.hideScrollBar {
+  overflow: hidden;
+}
+
+/* Apply styles to hide scrollbar for WebKit browsers (Chrome, Safari, etc.) */
+.hideScrollBar::-webkit-scrollbar {
+  width: 0.2rem; /* Set the width of the invisible scrollbar */
+}
+
+.hideScrollBar::-webkit-scrollbar-thumb {
+  background-color: transparent; /* Set the background color of the thumb to transparent */
+}
+
+/* Apply styles to hide scrollbar for Firefox */
+.hideScrollBar {
+  scrollbar-width: thin; /* For Firefox */
+}
+
+.hideScrollBar::-webkit-scrollbar-track {
+  background-color: transparent; /* Set the background color of the track to transparent */
+}

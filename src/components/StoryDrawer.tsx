@@ -24,7 +24,7 @@ function StoryDrawer({
 
   const [product, setProduct] = useState<any>();
   const [variant, setVariant] = useState("");
-  const [textforCart, setTextforCart] = useState("Add to cart");
+  const [textforCart, setTextforCart] = useState("ADD TO CART");
 
   useEffect(() => {
     const Abortcontoller = new AbortController();
@@ -44,7 +44,7 @@ function StoryDrawer({
       }
     }
     fetchData();
-    setTextforCart("Add to cart");
+    setTextforCart("ADD TO CART");
     return () => {
       Abortcontoller.abort();
     };
@@ -80,11 +80,11 @@ function StoryDrawer({
       })
       .then((data) => {
         // Handle the response data here
-        setTextforCart("added to cart");
+        setTextforCart("ADDED TO CART");
       })
       .catch((error) => {
         // Handle any errors here
-        setTextforCart("added to cart");
+        setTextforCart("ADDED TO CART");
         console.error(error);
       });
   };
@@ -115,7 +115,7 @@ function StoryDrawer({
 
           <div className={styles.sizeContainer}>
             <button
-              disabled={textforCart === "Add to cart" ? false : true}
+              disabled={textforCart === "ADD TO CART" ? false : true}
               onClick={() => {
                 handleAddToCart();
                 getClickdata("ADD_TO_CART");

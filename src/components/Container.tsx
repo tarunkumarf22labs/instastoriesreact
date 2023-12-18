@@ -34,6 +34,7 @@ export default function () {
     onPrevious,
     onNext,
     preloadCount,
+    activeStoriesIndex,
   } = useContext<GlobalCtx>(GlobalContext);
   const { stories } = useContext<StoriesContextInterface>(StoriesContext);
 
@@ -51,7 +52,6 @@ export default function () {
       }
     }
   }, [currentIndex]);
-
 
   useEffect(() => {
     if (typeof isPaused === "boolean") {
@@ -92,7 +92,7 @@ export default function () {
   };
 
   const previous = (currentStoryIndex) => {
-    getClickdata("VIEWS")
+    getClickdata("VIEWS");
     if (onPrevious != undefined) {
       onPrevious(currentStoryIndex);
     }
@@ -114,7 +114,7 @@ export default function () {
   };
 
   const updateNextStoryIdForLoop = () => {
-    getClickdata("VIEWS")
+    getClickdata("VIEWS");
     setCurrentIdWrapper((prev) => {
       if (prev >= stories.length - 1) {
         onAllStoriesEnd && onAllStoriesEnd(currentId, stories);
@@ -124,7 +124,7 @@ export default function () {
   };
 
   const updateNextStoryId = () => {
-    getClickdata("VIEWS")
+    getClickdata("VIEWS");
     setCurrentIdWrapper((prev) => {
       if (prev < stories.length - 1) return prev + 1;
       onAllStoriesEnd && onAllStoriesEnd(currentId, stories);
@@ -142,9 +142,9 @@ export default function () {
   const mouseUp =
     (type: string) => (e: React.MouseEvent | React.TouchEvent) => {
       e.preventDefault();
-      e.stopPropagation()
+      e.stopPropagation();
       mousedownId.current && clearTimeout(mousedownId.current);
-      if (pause) {
+      if (pause && type === "previous" && activeStoriesIndex === currentId) {
         toggleState("play");
       } else {
         type === "next" ? next({ isSkippedByUser: true }) : previous(currentId);
@@ -154,14 +154,13 @@ export default function () {
   const getVideoDuration = (duration: number) => {
     setVideoDuration(duration * 1000);
   };
-  
 
   return (
     <div
       style={{
         ...styles.container,
         ...storyContainerStyles,
-        ...{ width, height  , maxWidth:'440px'},
+        ...{ width, height, maxWidth: "440px" },
       }}
     >
       <ProgressContext.Provider
@@ -185,14 +184,14 @@ export default function () {
       {!preventDefault && (
         <div style={styles.overlay}>
           <div
-            style={{ width: "50%", display:'block'}}
+            style={{ width: "50%", display: "block", zIndex: 10 }}
             onTouchStart={debouncePause}
             onTouchEnd={mouseUp("previous")}
             onMouseDown={debouncePause}
             onMouseUp={mouseUp("previous")}
           />
           <div
-            style={{ width: "50%", display:'block'}}
+            style={{ width: "50%", display: "block", zIndex: 10 }}
             onTouchStart={debouncePause}
             onTouchEnd={mouseUp("next")}
             onMouseDown={debouncePause}
@@ -210,7 +209,7 @@ const styles = {
     flexDirection: "column" as const,
     background: "#111",
     position: "relative" as const,
-    WebkitUserSelect: 'none' as const,
+    WebkitUserSelect: "none" as const,
   },
   overlay: {
     position: "absolute" as const,
