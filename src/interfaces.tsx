@@ -28,6 +28,13 @@ export interface ReactInstaStoriesProps {
   keyboardNavigation?: boolean;
   preventDefault?: boolean;
   preloadCount?: number;
+  handleTouchStart: React.PointerEventHandler;
+  handleTouchEnd: React.PointerEventHandler;
+  onCloseClick: () => void;
+  onAudioClick: () => void;
+  videoRef: React.MutableRefObject<any>;
+  isMuted: boolean;
+  allStories: any;
 }
 
 export interface GlobalCtx {
@@ -58,6 +65,12 @@ export interface GlobalCtx {
   preventDefault?: boolean;
   preloadCount?: number;
   allStories?: [];
+  onCloseClick: () => void;
+  onAudioClick: () => void;
+  isMuted: boolean;
+  videoRef: React.MutableRefObject<any>;
+  handleTouchStart: React.PointerEventHandler<HTMLDivElement>;
+  handleTouchEnd: React.PointerEventHandler<HTMLDivElement>;
 }
 
 type NumberOrString = number | string;
@@ -118,7 +131,7 @@ export interface Story {
   duration?: number;
   styles?: object;
   content?: Renderer;
-  originalContent?: Renderer
+  originalContent?: Renderer;
   // Whether to preload the resource or not, defaults to `true` for images and `false` for videos (video preloading is experimental)
   preloadResource?: boolean;
 }
@@ -144,7 +157,7 @@ export interface HeaderProps {
   profileImage: string;
   heading: string;
   onCloseClick: Function;
-  onAudioClick: Function
+  onAudioClick: Function;
 }
 
 export interface ProgressProps {

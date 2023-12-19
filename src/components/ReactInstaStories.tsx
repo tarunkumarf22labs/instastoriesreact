@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { useEffect, useState } from "react";
 import {
   ReactInstaStoriesProps,
@@ -30,7 +28,7 @@ const generateStories = (
       story = Object.assign(story, s);
     }
 
-    let renderer = getRenderer(story, renderers);
+    const renderer = getRenderer(story, renderers);
     story.originalContent = story.content;
     story.content = renderer;
     return story;
@@ -38,10 +36,10 @@ const generateStories = (
 };
 
 const ReactInstaStories = function (props: ReactInstaStoriesProps) {
-  let renderers = props.renderers
+  const renderers = props.renderers
     ? props.renderers.concat(defaultRenderers)
     : defaultRenderers;
-  let context: GlobalCtx = {
+  const context: GlobalCtx = {
     width: props.width,
     height: props.height,
     loader: props.loader,
@@ -68,7 +66,9 @@ const ReactInstaStories = function (props: ReactInstaStoriesProps) {
     onAudioClick: props.onAudioClick,
     videoRef: props.videoRef,
     isMuted: props.isMuted,
-    allStories: props.allStories
+    allStories: props.allStories,
+    handleTouchStart: props?.handleTouchStart,
+    handleTouchEnd: props?.handleTouchEnd,
   };
   const [stories, setStories] = useState<{ stories: Story[] }>({
     stories: generateStories(props.stories, renderers),
@@ -81,15 +81,15 @@ const ReactInstaStories = function (props: ReactInstaStoriesProps) {
   return (
     <GlobalContext.Provider value={context}>
       <StoriesContext.Provider value={stories}>
-        <Container/>
+        <Container />
       </StoriesContext.Provider>
     </GlobalContext.Provider>
   );
 };
 
 ReactInstaStories.defaultProps = {
-  width: '100%',
-  height: '100%',
+  width: "100%",
+  height: "100%",
   defaultInterval: 4000,
   preloadCount: 1,
 };
