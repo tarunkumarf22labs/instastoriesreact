@@ -6,10 +6,8 @@ import React, {
   useMemo,
   useReducer,
   useRef,
-  useState,
 } from "react";
 import Stories from "../components/ReactInstaStories";
-import { StoriesData } from "../interfaces";
 import { getClickdata, loadFirebase } from "../hooks/firebase";
 import { useWindowWidth } from "../hooks/useWindowSize";
 import {
@@ -28,6 +26,7 @@ import {
 import storiesReducer from "../reducer/stories.reducer";
 
 import styles from "../styles/myStories.module.css";
+import { useTouchActions } from "../hooks/touchActions";
 
 const MyStories = (props) => {
   const [state, dispatch] = useReducer(storiesReducer, getInitialData(props));
@@ -43,6 +42,11 @@ const MyStories = (props) => {
 
   const videoRef = useRef(null);
   const isSizeGreaterThan440 = useWindowWidth();
+  const { handleTouchStart, handleTouchEnd } = useTouchActions({
+    storiesData,
+    activeStoriesIndex,
+    dispatch,
+  });
 
   const deviceHeight = useMemo(() => {
     if (!isSizeGreaterThan440) {
@@ -50,8 +54,8 @@ const MyStories = (props) => {
     }
   }, [isSizeGreaterThan440]);
 
-  const onSpecificStoriesClick = useCallback((index, payload) => {
-    getClickdata("VIEWS")
+  const onSpecificStoriesClick = useCallback((index) => {
+    getClickdata("VIEWS");
     dispatch({ type: SET_ACTIVE_STORIES_INDEX_ADN_SHOW, payload: index });
   }, []);
 
@@ -79,7 +83,6 @@ const MyStories = (props) => {
   );
 
   const onAllStoriesEnd = useCallback(() => {
-
     if (activeStoriesIndex === storiesData.length - 1) {
       dispatch({ type: SET_ACTIVE_STORIES_AND_INDEX, payload: 0 });
       return;
@@ -91,7 +94,6 @@ const MyStories = (props) => {
       });
     }
   }, [activeStoriesIndex, storiesData]);
-
 
   const onNextBtnClick = useCallback(
     (currentStoryIndex) => {
@@ -134,7 +136,7 @@ const MyStories = (props) => {
     } else if (deltaY < 0) {
       // Scrolling up, play the previous video
       // debounce(() => previous(currentId), 10);
-      onPreviousBtnClick(currentId)
+      onPreviousBtnClick(currentId);
     }
   };
 
@@ -151,6 +153,8 @@ const MyStories = (props) => {
 
   const storiesProps = useMemo(
     () => ({
+      handleTouchStart: handleTouchStart,
+      handleTouchEnd: handleTouchEnd,
       stories: activeStories,
       defaultInterval: 3000,
       onPrevious: onPreviousBtnClick,
@@ -167,6 +171,8 @@ const MyStories = (props) => {
       isMuted,
     }),
     [
+      handleTouchStart,
+      handleTouchEnd,
       activeStories,
       activeStoriesIndex,
       onPreviousBtnClick,
@@ -218,28 +224,15 @@ const MyStories = (props) => {
     }
   }, [storiesData]);
 
-  useEffect(() => loadFirebase(), [storiesData]);
-
   if (videoRef?.current) {
     videoRef.current.muted = isMuted;
   }
+  useEffect(() => {
+    loadFirebase();
+  }, [storiesData]);
 
   return (
     <>
-      <h2
-        style={{
-          marginTop: 0,
-          textTransform: "uppercase",
-          fontWeight: 600,
-          width: "100%",
-          color: "#000",
-          textAlign: "center",
-          fontSize: "16px",
-          margin: "3rem 0 2rem",
-        }}
-      >
-        🎥 Tap any reel to Shop Now 🌟
-      </h2>
       <div
         className={styles.myStoriesContainer}
         style={{
@@ -249,7 +242,6 @@ const MyStories = (props) => {
           overflowX: "scroll",
           width: "100%",
           padding: "0 10px",
-          
         }}
       >
         {props?.storesData.map((item, index) => {
