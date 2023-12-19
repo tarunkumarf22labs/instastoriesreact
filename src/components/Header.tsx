@@ -41,7 +41,7 @@ const Header = ({
       <div
         style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
       >
-        {profileImage && <img style={styles.img} src={profileImage} />}
+        {/* {profileImage && <img style={styles.img} src={profileImage} />} */}
         <span style={styles.text}>
           <p style={styles.heading}>{heading}</p>
         </span>
@@ -55,7 +55,7 @@ const Header = ({
           cursor: "pointer",
         }}
       >
-        <ShareButton story_id={story?.id}/>
+        <ShareButton story_id={story?.id} />
         {story?.type === "video" && (
           <div
             onClick={(e) => {
