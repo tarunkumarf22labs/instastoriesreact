@@ -68,6 +68,7 @@ const ReactInstaStories = function (props: ReactInstaStoriesProps) {
     onAudioClick: props.onAudioClick,
     videoRef: props.videoRef,
     isMuted: props.isMuted,
+    activeStoriesIndex: props.activeStoriesIndex,
   };
   const [stories, setStories] = useState<{ stories: Story[] }>({
     stories: generateStories(props.stories, renderers),
