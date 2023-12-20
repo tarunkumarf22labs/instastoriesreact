@@ -137,7 +137,7 @@ const MyStories = (props) => {
     () => ({
       stories: activeStories,
       activeStoriesIndex,
-      defaultInterval: 3000,
+      defaultInterval: 5000,
       onPrevious: onPreviousBtnClick,
       onAllStoriesEnd,
       onNext: onNextBtnClick,

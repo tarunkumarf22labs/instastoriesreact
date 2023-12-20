@@ -20,12 +20,13 @@
 
   /* Apply styles to hide scrollbar */
 .hideScrollBar {
-  overflow: hidden;
+  overflow-x: scroll;
 }
 
 /* Apply styles to hide scrollbar for WebKit browsers (Chrome, Safari, etc.) */
 .hideScrollBar::-webkit-scrollbar {
   width: 0.2rem; /* Set the width of the invisible scrollbar */
+  height: 0;
 }
 
 .hideScrollBar::-webkit-scrollbar-thumb {
