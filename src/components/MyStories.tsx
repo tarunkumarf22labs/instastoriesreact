@@ -142,6 +142,15 @@ const MyStories = (props) => {
 
   const getAlignmentOfStories = useMemo(() => {
     const numOfStories = props?.storesData?.length;
+    if (props?.showReels) {
+      if (!isSizeGreaterThan440) {
+        return "flex-start";
+      } else if (isSizeGreaterThan440 && numOfStories > 5) {
+        return "flex-start";
+      } else {
+        return "center";
+      }
+    }
     if (!isSizeGreaterThan440 && numOfStories > 4) {
       return "flex-start";
     } else if (isSizeGreaterThan440 && numOfStories > 10) {
@@ -149,7 +158,7 @@ const MyStories = (props) => {
     } else {
       return "center";
     }
-  }, [isSizeGreaterThan440]);
+  }, [isSizeGreaterThan440, props?.showReels]);
 
   const storiesProps = useMemo(
     () => ({
