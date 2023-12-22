@@ -129,17 +129,17 @@ export default function Container() {
     }, 200);
   };
 
-  const mouseUp =
-    (type: string) => (e: React.MouseEvent | React.TouchEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      mousedownId.current && clearTimeout(mousedownId.current);
-      if (pause) {
-        toggleState("play");
-      } else {
-        type === "next" ? next({ isSkippedByUser: true }) : previous(currentId);
-      }
-    };
+  // const mouseUp =
+  //   (type: string) => (e: React.MouseEvent | React.TouchEvent) => {
+  //     e.preventDefault();
+  //     e.stopPropagation();
+  //     mousedownId.current && clearTimeout(mousedownId.current);
+  //     if (pause) {
+  //       toggleState("play");
+  //     } else {
+  //       type === "next" ? next({ isSkippedByUser: true }) : previous(currentId);
+  //     }
+  //   };
 
   const getVideoDuration = (duration: number) => {
     setVideoDuration(duration * 1000);
@@ -186,7 +186,6 @@ export default function Container() {
         ...{ width, height, maxWidth: "440px" },
       }}
     >
-      check
       <ProgressContext.Provider
         value={{
           bufferAction: bufferAction,
