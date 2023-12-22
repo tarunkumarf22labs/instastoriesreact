@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { SET_ACTIVE_STORIES_AND_INDEX } from "../reducer/stories.actionTypes";
-import { getClickdata } from "./firebase";
 
 export const useTouchActions = ({
   storiesData,
@@ -9,10 +8,12 @@ export const useTouchActions = ({
 }) => {
   const startY = useRef(null);
   const handleTouchStart = (event) => {
+    console.log("start");
     startY.current = event.clientY;
   };
 
   const handleTouchEnd = (event) => {
+    console.log("end");
     if (!startY.current) return;
 
     const touchY = event.clientY;
@@ -34,7 +35,6 @@ export const useTouchActions = ({
           payload: activeStoriesIndex + 1,
         });
       }
-      getClickdata("VIEWS");
       // Implement your logic for swipe up
     }
     // Swipe Down
@@ -47,7 +47,6 @@ export const useTouchActions = ({
           payload: activeStoriesIndex - 1,
         });
       }
-      getClickdata("VIEWS");
       // Implement your logic for swipe down
     }
     startY.current = null;

@@ -20,10 +20,10 @@ const ProductCard = ({
   startProgress,
 }: Props) => {
   const [product, setProduct] = useState<any>();
-  // const [variant, setVariant] = useState("");
-  // const [isVariantSelectorOpen, setIsVariantSelectorOpen] = useState(false);
-  // const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
-  // const [textforCart, setTextforCart] = useState("Add to cart");
+  const [variant, setVariant] = useState("");
+  const [isVariantSelectorOpen, setIsVariantSelectorOpen] = useState(false);
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const [textforCart, setTextforCart] = useState("Buy Now");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const ProductCard = ({
         const value = await data.json();
         const relevantData = handledata(value);
         setProduct(relevantData);
-        // setVariant(relevantData?.variants[0].id);
+        setVariant(relevantData?.variants[0].id);
 
         setIsLoading(false);
       } catch (error) {
@@ -46,21 +46,23 @@ const ProductCard = ({
       }
     }
     fetchData();
-    // setSelectedVariantIndex(0);
-    // setIsVariantSelectorOpen(false);
-    // setTextforCart("Add to cart");
+    setSelectedVariantIndex(0);
+    setIsVariantSelectorOpen(false);
+    setTextforCart("Buy Now");
     return () => {
       Abortcontoller.abort();
     };
   }, [productname]);
 
-  // const handleVariantSelection = (e, id, index) => {
-  //   e.stopPropagation();
-  //   if (videoRef.current) videoRef.current.pause();
-  //   setVariant(id);
-  //   setSelectedVariantIndex(index);
-  //   setIsVariantSelectorOpen(true);
-  // };
+  const handleVariantSelection = (e, id, index) => {
+    e.stopPropagation();
+    if (videoRef.current) videoRef.current.pause();
+    setVariant(id);
+    setSelectedVariantIndex(index);
+    setIsVariantSelectorOpen(true);
+  };
+
+  
 
   const handleOpenProductDetails = () => {
     triggers.setProductId(productname.trim());
@@ -71,51 +73,51 @@ const ProductCard = ({
   };
 
   // variant
-  // const handleAddToCart = () => {
-  //   setTextforCart(<Loader />);
+  const handleAddToCart = () => {
+    setTextforCart(<Loader />);
 
-  //   const url = `https://deciwood.com/cart/add`;
+    const url = `https://deciwood.com/cart/add`;
 
-  //   const formData = new FormData();
-  //   formData.append("Style", "Limited-2");
-  //   formData.append("quantity", 1);
-  //   formData.append("form_type", "product");
-  //   formData.append("utf8", "✓");
-  //   formData.append("id", variant);
-  //   formData.append("product-id", product.id);
-  //   formData.append(
-  //     "sections",
-  //     "cart-notification-product,cart-notification-button,cart-icon-bubble"
-  //   );
-  //   formData.append("sections_url", `/products/${productname}`);
-  //   const requestOptions = {
-  //     method: "POST",
-  //     body: formData,
-  //   };
+    const formData = new FormData();
+    formData.append("Style", "Limited-2");
+    formData.append("quantity", 1);
+    formData.append("form_type", "product");
+    formData.append("utf8", "✓");
+    formData.append("id", variant);
+    formData.append("product-id", product.id);
+    formData.append(
+      "sections",
+      "cart-notification-product,cart-notification-button,cart-icon-bubble"
+    );
+    formData.append("sections_url", `/products/${productname}`);
+    const requestOptions = {
+      method: "POST",
+      body: formData,
+    };
 
-  //   fetch(url, requestOptions)
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! Status: ${response.status}`);
-  //       }
-  //       return response.json(); // Parse the response JSON if needed
-  //     })
-  //     .then((data) => {
-  //       // Handle the response data here
+    fetch(url, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json(); // Parse the response JSON if needed
+      })
+      .then((data) => {
+        // Handle the response data here
 
-  //       setTextforCart("added to cart");
-  //     })
-  //     .catch((error) => {
-  //       // Handle any errors here
-  //       setTextforCart("added to cart");
-  //       console.error(error);
-  //     });
-  // };
+        setTextforCart("added to cart");
+      })
+      .catch((error) => {
+        // Handle any errors here
+        setTextforCart("added to cart");
+        console.error(error);
+      });
+  };
   const handleOverlayClick = () => {
-    // if (isVariantSelectorOpen) {
-    // setIsVariantSelectorOpen(false);
+    if (isVariantSelectorOpen) {
+    setIsVariantSelectorOpen(false);
     startProgress();
-    // }
+    }
   };
 
   const getContentString = (title) => {
@@ -143,9 +145,9 @@ const ProductCard = ({
           <div
             className={styles.productCardImg}
             onMouseEnter={() => triggers.setProductId(productname)}
-            onClick={() => {
-              handleOpenProductDetails();
-            }}
+            // onClick={() => {
+            //   handleOpenProductDetails();
+            // }}
           >
             <img
               src={product?.images[0].src}
@@ -162,59 +164,76 @@ const ProductCard = ({
           <div
             className={styles.productCardInfo}
             onMouseEnter={() => triggers.setProductId(productname)}
-            onClick={() => handleOpenProductDetails()}
+            // onClick={() =>
+            //   // handleOpenProductDetails()
+            // }
           >
             <span className={styles.productCardInfoTitle}>
               {getContentString(product?.title)}
             </span>
             <span className={styles.productCardInfoPrice}>
-              {CURRENCY_VS_SYMBOL[window?.Shopify?.currency?.active] || "Rs."}{" "}
-              {product?.variants[0].price}
+            {CURRENCY_VS_SYMBOL[window?.Shopify?.currency?.active] || "Rs."} {product?.variants[0].price}
             </span>
           </div>
         </div>
       )}
-      {/* {product?.variants?.length > 1 && (
-          <div
-            className={`${styles.productCardVariants} ${
-              isVariantSelectorOpen ? styles.productVariantOpen : ""
-            }`}
-          >
-            {product?.variants?.map((variant, index) => (
-              <div
-                key={index}
-                className={`${styles.productCardVariant} ${
-                  selectedVariantIndex == index
-                    ? styles.productCardVariantActive
-                    : ""
-                }`}
-                onClick={(e) => handleVariantSelection(e, variant.id, index)}
-              >
-                {variant?.title}
-              </div>
-            ))}
-          </div>
-        )} */}
-      {/* {isVariantSelectorOpen || product?.variants?.length < 2 ? ( */}
-      <button
-        onClick={() => handleOpenProductDetails()}
-        className={styles.addToCartProductCard}
-      >
-        {/* {textforCart} */}
-        Shop Now
-      </button>
-      {/* ) : ( */}
-      {/* <button
-            className={styles.addToCartProductCard}
-            onClick={() => {
-              stopProgress();
-              setVariant(product?.variants[0]?.id);
-              setIsVariantSelectorOpen(true);
-            }}
-          >
-            {textforCart}
-          </button> */}
-      {/* )} */}
+      {product?.variants?.length > 1 && (
+        <div
+          className={`${styles.productCardVariants} ${
+            isVariantSelectorOpen ? styles.productVariantOpen : ""
+          }`}
+        >
+          {product?.variants?.map((variant, index) => (
+            <div
+              key={index}
+              className={`${styles.productCardVariant} ${
+                selectedVariantIndex == index
+                  ? styles.productCardVariantActive
+                  : ""
+              }`}
+              onClick={(e) => handleVariantSelection(e, variant.id, index)}
+            >
+              {variant?.title}
+            </div>
+          ))}
+        </div>
+      )}
+      {isVariantSelectorOpen || product?.variants?.length < 2 ? (
+        // <button>
+        <a
+          href={`${URL}/cart/${variant}:1?checkout`}
+          className={styles.atc}
+          onClick={() => {
+            getClickdata("BUY_NOW");
+          }}
+        >
+          BUY NOW
+
+          {/* onClick={() =>
+            // handleOverlayClick()
+            // handleOpenProductDetails()
+            getClickdata("BUY_NOW")
+          }
+          href={`${URL}/cart/${variant.id}:1?checkout`}
+          className={styles.atcButton}
+          // className={styles.addToCartProductCard}
+        >
+          {/* {textforCart} */}
+          {/* Buy Now */}
+        </a>
+      ) : (
+        // </button>
+        <button
+          className={styles.addToCartProductCard}
+          onClick={() => {
+            stopProgress();
+            setVariant(product?.variants[0]?.id);
+            setIsVariantSelectorOpen(true);
+          }}
+        >
+          {textforCart}
+        </button>
+      )}
       <div
         id={styles.poweredByProductCard}
         onClick={() => window.open("https://shopclips.app/", "_blank")}
