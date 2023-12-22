@@ -186,7 +186,6 @@ export default function Container() {
         ...{ width, height, maxWidth: "440px" },
       }}
     >
-      check
       <ProgressContext.Provider
         value={{
           bufferAction: bufferAction,
