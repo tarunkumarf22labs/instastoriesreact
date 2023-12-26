@@ -55,7 +55,6 @@ export const useTouchActions = ({
 
   return {
     handleTouchStart,
-
     handleTouchEnd,
   };
 };

@@ -245,6 +245,20 @@ const MyStories = (props) => {
 
   return (
     <>
+      <h2
+        style={{
+          marginTop: 0,
+          textTransform: "uppercase",
+          fontWeight: 600,
+          width: "100%",
+          color: "#000",
+          textAlign: "center",
+          fontSize: "16px",
+          margin: "3rem 0 2rem",
+        }}
+      >
+        🎥 Tap any reel to Shop Now 🌟
+      </h2>
       <div
         className={styles.myStoriesContainer}
         style={{
