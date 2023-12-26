@@ -42,16 +42,17 @@ const MyStories = (props) => {
   } = state;
 
   const videoRef = useRef(null);
-  const isSizeGreaterThan440 = useWindowWidth();
+  const {isSizeGreaterThan440, height} = useWindowWidth();
 
-  const deviceHeight = useMemo(() => {
+  const deviceHeight = () => {
     if (!isSizeGreaterThan440) {
-      return window.innerHeight;
+      return height;
     }
-  }, [isSizeGreaterThan440]);
+    return "100%";
+  };
 
   const onSpecificStoriesClick = useCallback((index, payload) => {
-    getClickdata("VIEWS")
+    getClickdata("VIEWS");
     dispatch({ type: SET_ACTIVE_STORIES_INDEX_ADN_SHOW, payload: index });
   }, []);
 
@@ -304,7 +305,7 @@ const MyStories = (props) => {
           className={styles.specialContainer}
           style={{
             zIndex: zIndex,
-            height: deviceHeight || "100%",
+            height: deviceHeight(),
           }}
         >
           <Stories {...storiesProps} />
