@@ -6,6 +6,7 @@ import React, {
   useMemo,
   useReducer,
   useRef,
+  useState,
 } from "react";
 import Stories from "../components/ReactInstaStories";
 import { getClickdata, loadFirebase } from "../hooks/firebase";
@@ -23,7 +24,7 @@ import {
   SET_ACTIVE_STORIES_INDEX_ADN_SHOW,
   TOGGLE_SHOW_STORIES,
 } from "../reducer/stories.actionTypes";
-import storiesReducer from "../reducer/stories.reducer";
+import { storiesReducer } from "../reducer/stories.reducer";
 
 import styles from "../styles/myStories.module.css";
 import { useTouchActions } from "../hooks/touchActions";
@@ -48,13 +49,14 @@ const MyStories = (props) => {
     dispatch,
   });
 
-  const deviceHeight = useMemo(() => {
+  const deviceHeight = () => {
     if (!isSizeGreaterThan440) {
-      return window.innerHeight;
+      return height;
     }
-  }, [isSizeGreaterThan440]);
+    return "100%";
+  };
 
-  const onSpecificStoriesClick = useCallback((index) => {
+  const onSpecificStoriesClick = useCallback((index, payload) => {
     getClickdata("VIEWS");
     dispatch({ type: SET_ACTIVE_STORIES_INDEX_ADN_SHOW, payload: index });
   }, []);
@@ -162,25 +164,26 @@ const MyStories = (props) => {
 
   const storiesProps = useMemo(
     () => ({
-      handleTouchStart: handleTouchStart,
-      handleTouchEnd: handleTouchEnd,
+      handleTouchStart,
+      handleTouchEnd,
       stories: activeStories,
-      defaultInterval: 3000,
+      activeStoriesIndex,
+      defaultInterval: 5000,
       onPrevious: onPreviousBtnClick,
-      onAllStoriesEnd: onAllStoriesEnd,
+      onAllStoriesEnd,
       onNext: onNextBtnClick,
-      allStories: storiesData,
+allStories: storiesData,
       loop: true,
       currentIndex,
       header: getHeader(activeStoriesIndex),
-      onAudioClick: onAudioClick,
-      onCloseClick: onCloseClick,
-      videoRef: videoRef,
+      onAudioClick,
+      onCloseClick,
+      videoRef,
       width: isSizeGreaterThan440 ? "440px" : "100%",
       isMuted,
     }),
     [
-      handleTouchStart,
+handleTouchStart,
       handleTouchEnd,
       activeStories,
       activeStoriesIndex,
@@ -193,7 +196,7 @@ const MyStories = (props) => {
       isSizeGreaterThan440,
       isMuted,
       currentIndex,
-      storiesData,
+storiesData,
     ]
   );
 
@@ -236,7 +239,7 @@ const MyStories = (props) => {
   if (videoRef?.current) {
     videoRef.current.muted = isMuted;
   }
-  useEffect(() => {
+useEffect(() => {
     loadFirebase();
   }, [storiesData]);
 
@@ -337,7 +340,7 @@ const MyStories = (props) => {
           className={styles.specialContainer}
           style={{
             zIndex: zIndex,
-            height: deviceHeight || "100%",
+            height: deviceHeight(),
           }}
         >
           <Stories {...storiesProps} />
