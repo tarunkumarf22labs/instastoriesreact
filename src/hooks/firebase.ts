@@ -43,7 +43,7 @@ export async function getClickdata(params) {
     "shlipashastra-studio";
   const firestore = window.firebase.firestore();
   const collectionRef = firestore.collection(collectionName);
-  const specificDocumentId = "analytics-prod";
+  const specificDocumentId = "analytics-dev";
   const specificDocumentRef = collectionRef.doc(specificDocumentId);
 
   const viewsSubcollection = specificDocumentRef.collection(params);

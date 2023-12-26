@@ -6,6 +6,7 @@ import React, {
   useMemo,
   useReducer,
   useRef,
+  useState,
 } from "react";
 import Stories from "../components/ReactInstaStories";
 import { getClickdata, loadFirebase } from "../hooks/firebase";
@@ -48,13 +49,14 @@ const MyStories = (props) => {
     dispatch,
   });
 
-  const deviceHeight = useMemo(() => {
+  const deviceHeight = () => {
     if (!isSizeGreaterThan440) {
-      return window.innerHeight;
+      return height;
     }
-  }, [isSizeGreaterThan440]);
+    return "100%";
+  };
 
-  const onSpecificStoriesClick = useCallback((index) => {
+  const onSpecificStoriesClick = useCallback((index, payload) => {
     getClickdata("VIEWS");
     dispatch({ type: SET_ACTIVE_STORIES_INDEX_ADN_SHOW, payload: index });
   }, []);
@@ -162,20 +164,21 @@ const MyStories = (props) => {
 
   const storiesProps = useMemo(
     () => ({
-      handleTouchStart: handleTouchStart,
-      handleTouchEnd: handleTouchEnd,
+      handleTouchStart,
+      handleTouchEnd,
       stories: activeStories,
-      defaultInterval: 3000,
+      activeStoriesIndex,
+      defaultInterval: 5000,
       onPrevious: onPreviousBtnClick,
-      onAllStoriesEnd: onAllStoriesEnd,
+      onAllStoriesEnd,
       onNext: onNextBtnClick,
       allStories: storiesData,
       loop: true,
       currentIndex,
       header: getHeader(activeStoriesIndex),
-      onAudioClick: onAudioClick,
-      onCloseClick: onCloseClick,
-      videoRef: videoRef,
+      onAudioClick,
+      onCloseClick,
+      videoRef,
       width: isSizeGreaterThan440 ? "440px" : "100%",
       isMuted,
     }),
@@ -337,7 +340,7 @@ const MyStories = (props) => {
           className={styles.specialContainer}
           style={{
             zIndex: zIndex,
-            height: deviceHeight || "100%",
+            height: deviceHeight(),
           }}
         >
           <Stories {...storiesProps} />
