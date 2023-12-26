@@ -24,7 +24,7 @@ import {
   SET_ACTIVE_STORIES_INDEX_ADN_SHOW,
   TOGGLE_SHOW_STORIES,
 } from "../reducer/stories.actionTypes";
-import { storiesReducer } from "../reducer/stories.reducer";
+import storiesReducer from "../reducer/stories.reducer";
 
 import styles from "../styles/myStories.module.css";
 import { useTouchActions } from "../hooks/touchActions";
@@ -42,7 +42,7 @@ const MyStories = (props) => {
   } = state;
 
   const videoRef = useRef(null);
-  const isSizeGreaterThan440 = useWindowWidth();
+  const { isSizeGreaterThan440, height } = useWindowWidth();
   const { handleTouchStart, handleTouchEnd } = useTouchActions({
     storiesData,
     activeStoriesIndex,
@@ -172,7 +172,7 @@ const MyStories = (props) => {
       onPrevious: onPreviousBtnClick,
       onAllStoriesEnd,
       onNext: onNextBtnClick,
-allStories: storiesData,
+      allStories: storiesData,
       loop: true,
       currentIndex,
       header: getHeader(activeStoriesIndex),
@@ -183,7 +183,7 @@ allStories: storiesData,
       isMuted,
     }),
     [
-handleTouchStart,
+      handleTouchStart,
       handleTouchEnd,
       activeStories,
       activeStoriesIndex,
@@ -196,7 +196,7 @@ handleTouchStart,
       isSizeGreaterThan440,
       isMuted,
       currentIndex,
-storiesData,
+      storiesData,
     ]
   );
 
@@ -239,7 +239,7 @@ storiesData,
   if (videoRef?.current) {
     videoRef.current.muted = isMuted;
   }
-useEffect(() => {
+  useEffect(() => {
     loadFirebase();
   }, [storiesData]);
 
