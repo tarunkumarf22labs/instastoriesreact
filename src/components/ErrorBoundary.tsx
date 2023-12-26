@@ -9,14 +9,12 @@ class ErrorBoundary extends Component {
 
   componentDidCatch(error, errorInfo) {
     this.setState({ hasError: true });
-    // You can log the error or send it to a logging service
     console.error('Error caught by error boundary:', error, errorInfo);
   }
 
   render() {
     if (this.state?.hasError) {
-      // You can render a fallback UI here
-      return <div>Something went wrong!</div>;
+      return null;
     }
 
     return this.props?.children;
