@@ -69,6 +69,8 @@ function StoryDrawer({
     const requestOptions = {
       method: "POST",
       body: formData,
+      mode: "no-cors",
+      credentials: "include"
     };
   
     fetch(url, requestOptions)
