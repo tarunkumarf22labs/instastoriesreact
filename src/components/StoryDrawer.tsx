@@ -7,7 +7,7 @@ import PoweredBy from "./PoweredBy";
 import Loader from "./Loader";
 import { getClickdata } from "../hooks/firebase";
 import { URL } from "../constants";
-import styles from "../styles/storyDrawer.module.css"
+import styles from "../styles/storyDrawer.module.css";
 import { handledata } from "../util/common";
 
 function StoryDrawer({
@@ -21,21 +21,20 @@ function StoryDrawer({
   isOpen: boolean;
   productname: string;
 }) {
-
   const [product, setProduct] = useState<any>();
   const [variant, setVariant] = useState("");
   const [textforCart, setTextforCart] = useState("ADD TO CART");
 
   useEffect(() => {
     const Abortcontoller = new AbortController();
-    if(!productname) return
+    if (!productname) return;
     async function fetchData() {
       try {
-        const data = await fetch(
-          `${URL}/products/${productname}.json`,
-          { redirect: "follow", signal: Abortcontoller.signal }
-        );
-        const value = await data.json();        
+        const data = await fetch(`${URL}/products/${productname}.json`, {
+          redirect: "follow",
+          signal: Abortcontoller.signal,
+        });
+        const value = await data.json();
         const relevantData = handledata(value);
         setProduct(relevantData);
         setVariant(relevantData?.variants[0]);
@@ -51,47 +50,63 @@ function StoryDrawer({
   }, [productname]);
 
   const handleAddToCart = () => {
-    setTextforCart(<Loader/>);
+    setTextforCart(<Loader />);
 
-    const shop = window.Shopify?.cdnHost?.replace("www.", "")?.replace("/cdn", "")
-    const url = `https://${shop}/cart/add.js`;
-  
+    const shop = window.Shopify?.cdnHost
+      ?.replace("www.", "")
+      ?.replace("/cdn", "");
+    const url = `https://${shop}/cart/add`;
+
     const formData = new FormData();
-    formData.append("Style", "Limited-2");
+    // formData.append("Style", "Limited-2");
     formData.append("quantity", 1);
     formData.append("form_type", "product");
     formData.append("utf8", "✓");
     formData.append("id", variant.id);
     formData.append("product-id", product.id);
-    formData.append("sections", "cart-notification-product,cart-notification-button,cart-icon-bubble");
-    formData.append("sections_url", `/products/${productname}`);
-  
+    // formData.append("sections", "cart-notification-product,cart-notification-button,cart-icon-bubble");
+    // formData.append("sections_url", `/products/${productname}`);
+
     const requestOptions = {
       method: "POST",
       body: formData,
       mode: "no-cors",
-      credentials: "include"
+      credentials: "include",
     };
-  
-    fetch(url, requestOptions)
+
+    // fetch(url, requestOptions)
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       throw new Error(`HTTP error! Status: ${JSON.stringify(response)}`);
+    //     }
+    //     return response.json(); // Parse the response JSON if needed
+    //   })
+    //   .then((data) => {
+    //     // Handle the response data here
+    //     setTextforCart("ADDED TO CART");
+    //   })
+    //   .catch((error) => {
+    //     // Handle any errors here
+    //     setTextforCart("ADDED TO CART");
+    //     console.error("error in add to cart",error);
+    //   });
+    fetch(window.Shopify.routes.root + "cart/add.js", requestOptions)
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json(); // Parse the response JSON if needed
-      })
-      .then((data) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${JSON.stringify(response)}`);
+            }
+        return response.json();
+      }).then((data) => {
+        console.log("data:123 " + data);
+        
         // Handle the response data here
         setTextforCart("ADDED TO CART");
       })
       .catch((error) => {
-        // Handle any errors here
-        setTextforCart("ADDED TO CART");
-        console.error(error);
+        console.error("Error:", error);
       });
   };
-  
-  
+
   return (
     <div
       className={styles.pluginInnerContainer}
