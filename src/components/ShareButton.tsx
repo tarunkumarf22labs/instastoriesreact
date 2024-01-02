@@ -39,7 +39,7 @@ const ShareButton = ({ story_id }) => {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlnsXlink="http://www.w3.org/1999/xlink"
           fill="#ffff"
           height="16px"
           width="16px"
@@ -47,7 +47,7 @@ const ShareButton = ({ story_id }) => {
           version="1.1"
           id="Layer_1"
           viewBox="0 0 458.624 458.624"
-          xml:space="preserve"
+          xmlSpace="preserve"
         >
           <g>
             <g>

@@ -6,6 +6,7 @@ export const useTouchActions = ({
   storiesData,
   activeStoriesIndex,
   dispatch,
+  setFirstUser,
 }) => {
   const startY = useRef(null);
   const handleTouchStart = (event) => {
@@ -34,6 +35,7 @@ export const useTouchActions = ({
           payload: activeStoriesIndex + 1,
         });
       }
+      setFirstUser(false);
       getClickdata("VIEWS");
       // Implement your logic for swipe up
     }

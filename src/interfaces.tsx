@@ -35,6 +35,8 @@ export interface ReactInstaStoriesProps {
   videoRef: React.MutableRefObject<any>;
   isMuted: boolean;
   allStories: any;
+  isFirstUser: boolean;
+  setFirstUser: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface GlobalCtx {
@@ -71,6 +73,8 @@ export interface GlobalCtx {
   videoRef: React.MutableRefObject<any>;
   handleTouchStart: React.PointerEventHandler<HTMLDivElement>;
   handleTouchEnd: React.PointerEventHandler<HTMLDivElement>;
+  isFirstUser: boolean;
+  setFirstUser: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 type NumberOrString = number | string;
