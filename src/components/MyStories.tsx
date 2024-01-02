@@ -31,6 +31,8 @@ import { useTouchActions } from "../hooks/touchActions";
 
 const MyStories = (props) => {
   const [state, dispatch] = useReducer(storiesReducer, getInitialData(props));
+  const [isFirstUser, setFirstUser] = useState(false);
+
   const {
     storiesData,
     showStories,
@@ -47,6 +49,7 @@ const MyStories = (props) => {
     storiesData,
     activeStoriesIndex,
     dispatch,
+    setFirstUser,
   });
 
   const deviceHeight = () => {
@@ -164,8 +167,10 @@ const MyStories = (props) => {
 
   const storiesProps = useMemo(
     () => ({
-      handleTouchStart,
-      handleTouchEnd,
+      isFirstUser: isFirstUser,
+      setFirstUser: setFirstUser,
+      handleTouchStart: handleTouchStart,
+      handleTouchEnd: handleTouchEnd,
       stories: activeStories,
       activeStoriesIndex,
       defaultInterval: 5000,
@@ -183,6 +188,8 @@ const MyStories = (props) => {
       isMuted,
     }),
     [
+      isFirstUser,
+      setFirstUser,
       handleTouchStart,
       handleTouchEnd,
       activeStories,
@@ -243,6 +250,18 @@ const MyStories = (props) => {
     loadFirebase();
   }, [storiesData]);
 
+  useEffect(() => {
+    if (document.cookie.indexOf("visited") >= 0) {
+      // User has visited before
+      setFirstUser(false);
+    } else {
+      // Set the cookie if it's the first visit
+      document.cookie =
+        "visited=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/";
+      setFirstUser(true);
+    }
+  }, []);
+
   return (
     <>
       <div
@@ -284,14 +303,14 @@ const MyStories = (props) => {
                 {props?.showReels ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    xmlnsXlink="http://www.w3.org/1999/xlink"
                     fill="#000000"
                     height="50px"
                     width="50px"
                     version="1.1"
                     id="Capa_1"
                     viewBox="0 0 210 210"
-                    xml:space="preserve"
+                    xmlSpace="preserve"
                     className={styles.playBtn}
                     style={{
                       position: "absolute",

@@ -69,6 +69,8 @@ const ReactInstaStories = function (props: ReactInstaStoriesProps) {
     allStories: props.allStories,
     handleTouchStart: props?.handleTouchStart,
     handleTouchEnd: props?.handleTouchEnd,
+    isFirstUser: props?.isFirstUser,
+    setFirstUser: props?.setFirstUser,
   };
   const [stories, setStories] = useState<{ stories: Story[] }>({
     stories: generateStories(props.stories, renderers),

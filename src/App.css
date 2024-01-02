@@ -43,3 +43,27 @@ video::media-controls {
 video {
   pointer-events: none;
 }
+
+.scroll-up-parent {
+  position: fixed;
+  bottom: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+}
+
+.scroll-up-item {
+  width: 120px;
+  height: 120px;
+  animation: scrollUp 1.5s infinite;
+}
+
+@keyframes scrollUp {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-90px);
+  }
+}

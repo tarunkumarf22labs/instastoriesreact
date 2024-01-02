@@ -7,17 +7,18 @@ import ProgressArray from "./ProgressArray";
 import {
   GlobalCtx,
   StoriesContext as StoriesContextInterface,
-  Renderer,
 } from "./../interfaces";
 import useIsMounted from "./../util/use-is-mounted";
 import { usePreLoader } from "../util/usePreLoader";
 import { getClickdata } from "../hooks/firebase";
+import ScrollIndicator from "./ScrollIndicator";
 
 export default function Container() {
   const [currentId, setCurrentId] = useState<number>(0);
   const [pause, setPause] = useState<boolean>(true);
   const [bufferAction, setBufferAction] = useState<boolean>(true);
   const [videoDuration, setVideoDuration] = useState<number>(0);
+
   const isMounted = useIsMounted();
 
   let mousedownId = useRef<any>();
@@ -38,6 +39,8 @@ export default function Container() {
     allStories,
     handleTouchStart,
     handleTouchEnd,
+    isFirstUser,
+    setFirstUser,
   } = useContext<GlobalCtx>(GlobalContext);
 
   let { stories } = useContext<StoriesContextInterface>(StoriesContext);
@@ -86,6 +89,7 @@ export default function Container() {
   const next = (
     options: { isSkippedByUser?: boolean } = { isSkippedByUser: false }
   ) => {
+    setFirstUser(false);
     if (onNext != undefined && options?.isSkippedByUser) {
       onNext(currentId);
     }
@@ -224,6 +228,7 @@ export default function Container() {
                 : debouncePause
             }
           />
+          {isFirstUser && <ScrollIndicator />}
         </div>
       )}
     </div>
