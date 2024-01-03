@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { useEffect, useState } from "react";
+import axios from "axios";
 import Loader from "./Loader";
 import { getClickdata } from "../hooks/firebase";
 import styles from "../styles/productCard.module.css";
@@ -20,10 +21,6 @@ const ProductCard = ({
   startProgress,
 }: Props) => {
   const [product, setProduct] = useState<any>();
-  // const [variant, setVariant] = useState("");
-  // const [isVariantSelectorOpen, setIsVariantSelectorOpen] = useState(false);
-  // const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
-  // const [textforCart, setTextforCart] = useState("Add to cart");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -31,36 +28,32 @@ const ProductCard = ({
     const Abortcontoller = new AbortController();
     async function fetchData() {
       try {
-        const data = await fetch(`${URL}/products/${productname}.json`, {
-          redirect: "follow",
-          signal: Abortcontoller.signal,
-        });
-        const value = await data.json();
-        const relevantData = handledata(value);
-        setProduct(relevantData);
-        // setVariant(relevantData?.variants[0].id);
+        const response = await axios.get(
+          `${URL}/products/${productname}.json`,
+          {
+            redirect: "follow",
+            cancelToken: new axios.CancelToken((cancel) =>
+              Abortcontoller.signal.addEventListener("abort", cancel)
+            ),
+          }
+        );
 
+        const relevantData = handledata(response.data);
+        setProduct(relevantData);
         setIsLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        if (axios.isCancel(error)) {
+          console.log("Request canceled", error.message);
+        } else {
+          console.error("Error fetching data:", error);
+        }
       }
     }
     fetchData();
-    // setSelectedVariantIndex(0);
-    // setIsVariantSelectorOpen(false);
-    // setTextforCart("Add to cart");
     return () => {
       Abortcontoller.abort();
     };
   }, [productname]);
-
-  // const handleVariantSelection = (e, id, index) => {
-  //   e.stopPropagation();
-  //   if (videoRef.current) videoRef.current.pause();
-  //   setVariant(id);
-  //   setSelectedVariantIndex(index);
-  //   setIsVariantSelectorOpen(true);
-  // };
 
   const handleOpenProductDetails = () => {
     triggers.setProductId(productname.trim());
@@ -70,52 +63,8 @@ const ProductCard = ({
     getClickdata("SHOP_NOW");
   };
 
-  // variant
-  // const handleAddToCart = () => {
-  //   setTextforCart(<Loader />);
-
-  //   const url = `https://deciwood.com/cart/add`;
-
-  //   const formData = new FormData();
-  //   formData.append("Style", "Limited-2");
-  //   formData.append("quantity", 1);
-  //   formData.append("form_type", "product");
-  //   formData.append("utf8", "✓");
-  //   formData.append("id", variant);
-  //   formData.append("product-id", product.id);
-  //   formData.append(
-  //     "sections",
-  //     "cart-notification-product,cart-notification-button,cart-icon-bubble"
-  //   );
-  //   formData.append("sections_url", `/products/${productname}`);
-  //   const requestOptions = {
-  //     method: "POST",
-  //     body: formData,
-  //   };
-
-  //   fetch(url, requestOptions)
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! Status: ${response.status}`);
-  //       }
-  //       return response.json(); // Parse the response JSON if needed
-  //     })
-  //     .then((data) => {
-  //       // Handle the response data here
-
-  //       setTextforCart("added to cart");
-  //     })
-  //     .catch((error) => {
-  //       // Handle any errors here
-  //       setTextforCart("added to cart");
-  //       console.error(error);
-  //     });
-  // };
   const handleOverlayClick = () => {
-    // if (isVariantSelectorOpen) {
-    // setIsVariantSelectorOpen(false);
     startProgress();
-    // }
   };
 
   const getContentString = (title) => {
@@ -124,10 +73,6 @@ const ProductCard = ({
   };
 
   return product?.title ? (
-    // <div
-    // onClick={() => handleOverlayClick()}
-    // className={isVariantSelectorOpen ? styles.variantOverlay : ""}
-    // >
     <div className={styles.productCard}>
       {isLoading ? (
         <div className={styles.shimmerContainer}>
@@ -168,52 +113,18 @@ const ProductCard = ({
               {getContentString(product?.title)}
             </span>
             <span className={styles.productCardInfoPrice}>
-            {CURRENCY_VS_SYMBOL[window?.Shopify?.currency?.active] || "Rs."} {product?.variants[0].price}
+              {CURRENCY_VS_SYMBOL[window?.Shopify?.currency?.active] || "Rs."}{" "}
+              {product?.variants[0].price}
             </span>
           </div>
         </div>
       )}
-      {/* {product?.variants?.length > 1 && (
-          <div
-            className={`${styles.productCardVariants} ${
-              isVariantSelectorOpen ? styles.productVariantOpen : ""
-            }`}
-          >
-            {product?.variants?.map((variant, index) => (
-              <div
-                key={index}
-                className={`${styles.productCardVariant} ${
-                  selectedVariantIndex == index
-                    ? styles.productCardVariantActive
-                    : ""
-                }`}
-                onClick={(e) => handleVariantSelection(e, variant.id, index)}
-              >
-                {variant?.title}
-              </div>
-            ))}
-          </div>
-        )} */}
-      {/* {isVariantSelectorOpen || product?.variants?.length < 2 ? ( */}
       <button
         onClick={() => handleOpenProductDetails()}
         className={styles.addToCartProductCard}
       >
-        {/* {textforCart} */}
         Shop Now
       </button>
-      {/* ) : ( */}
-      {/* <button
-            className={styles.addToCartProductCard}
-            onClick={() => {
-              stopProgress();
-              setVariant(product?.variants[0]?.id);
-              setIsVariantSelectorOpen(true);
-            }}
-          >
-            {textforCart}
-          </button> */}
-      {/* )} */}
       <div
         id={styles.poweredByProductCard}
         onClick={() => window.open("https://shopclips.app/", "_blank")}
@@ -230,8 +141,6 @@ const ProductCard = ({
       </div>
     </div>
   ) : (
-    // {" "}
-    // </div>
     <></>
   );
 };

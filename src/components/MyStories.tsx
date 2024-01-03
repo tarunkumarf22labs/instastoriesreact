@@ -14,6 +14,7 @@ import { getClickdata, loadFirebase } from "../hooks/firebase";
 import { useWindowWidth } from "../hooks/useWindowSize";
 import {
   capitalizeFirstLetterOfEachWord,
+  getHeader,
   getInitialData,
 } from "../util/common";
 import {
@@ -31,6 +32,7 @@ import styles from "../styles/myStories.module.css";
 
 const MyStories = (props) => {
   const [state, dispatch] = useReducer(storiesReducer, getInitialData(props));
+
   const {
     storiesData,
     showStories,
@@ -40,6 +42,10 @@ const MyStories = (props) => {
     currentIndex,
     zIndex,
   } = state;
+
+  console.log({activeStories})
+  
+  const {showReels=false, circleSize=59, circleColor="#00000", stories=[]} = props;
 
   const videoRef = useRef(null);
   const {isSizeGreaterThan440, height} = useWindowWidth();
@@ -51,7 +57,7 @@ const MyStories = (props) => {
     return "100%";
   };
 
-  const onSpecificStoriesClick = useCallback((index, payload) => {
+  const onSpecificStoriesClick = useCallback((index) => {
     getClickdata("VIEWS");
     dispatch({ type: SET_ACTIVE_STORIES_INDEX_ADN_SHOW, payload: index });
   }, []);
@@ -80,11 +86,11 @@ const MyStories = (props) => {
   );
 
   const onAllStoriesEnd = useCallback(() => {
-    if (activeStoriesIndex === storiesData.length - 1) {
+    if (activeStoriesIndex === storiesData?.length - 1) {
       dispatch({ type: SET_ACTIVE_STORIES_AND_INDEX, payload: 0 });
       return;
     }
-    if (activeStoriesIndex < storiesData.length) {
+    if (activeStoriesIndex < storiesData?.length) {
       dispatch({
         type: SET_ACTIVE_STORIES_AND_INDEX,
         payload: activeStoriesIndex + 1,
@@ -95,8 +101,8 @@ const MyStories = (props) => {
   const onNextBtnClick = useCallback(
     (currentStoryIndex) => {
       if (
-        currentStoryIndex === activeStories.length - 1 &&
-        activeStoriesIndex === storiesData.length - 1
+        currentStoryIndex === activeStories?.length - 1 &&
+        activeStoriesIndex === storiesData?.length - 1
       ) {
         dispatch({ type: SET_ACTIVE_STORIES_AND_INDEX, payload: 0 });
         return;
@@ -115,16 +121,8 @@ const MyStories = (props) => {
     if (currentIndex != 0) dispatch({ type: SET_CURRENT_INDEX, payload: 0 });
   }, [showStories]);
 
-  const getHeader = useCallback(
-    (index) => {
-      const { name, image } = props?.storesData[index];
-      return { profileImage: image, heading: name };
-    },
-    [activeStoriesIndex]
-  );
-
   const getAlignmentOfStories = useMemo(() => {
-    const numOfStories = props?.storesData?.length;
+    const numOfStories = storiesData?.length;
     if (!isSizeGreaterThan440 && numOfStories > 4) {
       return "flex-start";
     } else if (isSizeGreaterThan440 && numOfStories > 10) {
@@ -144,7 +142,7 @@ const MyStories = (props) => {
       onNext: onNextBtnClick,
       loop: true,
       currentIndex,
-      header: getHeader(activeStoriesIndex),
+      header: getHeader(storiesData?.[activeStoriesIndex]),
       onAudioClick,
       onCloseClick,
       videoRef,
@@ -168,11 +166,11 @@ const MyStories = (props) => {
 
   const findIndexesForStory = useCallback(
     (storiesData) => {
-      const story_id = window?.location?.search.split("=")[1];
+      const story_id = window?.location?.search?.split("=")[1];
       if (story_id) {
-        for (let i = 0; i < storiesData.length; i++) {
-          for (let j = 0; j < storiesData[i].length; j++) {
-            if (storiesData[i][j]?.id == story_id) {
+        for (let i = 0; i < storiesData?.length; i++) {
+          for (let j = 0; j < storiesData?.[i]?.length; j++) {
+            if (storiesData?.[i]?.[j]?.id == story_id) {
               return { activeStoriesIndex: i, activeChildStoryIndex: j };
             }
           }
@@ -208,6 +206,8 @@ const MyStories = (props) => {
     videoRef.current.muted = isMuted;
   }
 
+  console.log({stories, storiesData})
+
   return (
     <>
       <div
@@ -215,13 +215,13 @@ const MyStories = (props) => {
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: props.showReels ? "" : getAlignmentOfStories,
+          justifyContent: showReels ? "" : getAlignmentOfStories,
           overflowX: "scroll",
           width: "100%",
           padding: "0 10px",
         }}
       >
-        {props?.storesData.map((item, index) => {
+        {stories?.map((item, index) => {
           return (
             <div
               key={index}
@@ -233,20 +233,20 @@ const MyStories = (props) => {
                 padding: "10px",
               }}
               onClick={() => {
-                onSpecificStoriesClick(index, item);
+                onSpecificStoriesClick(index);
                 hanldeUpdateZindex("open");
               }}
             >
               <div
                 style={{
-                  height: props?.showReels ? "400px" : "66px",
-                  width: props?.showReels ? "256px" : "66px",
-                  borderRadius: props?.showReels ? "" : "50%",
-                  position: props?.showReels ? "relative" : "",
-                  border: `2px solid ${props?.properties?.bg}`,
+                  height: showReels ? "400px" : `${circleSize}px`,
+                  width: showReels ? "256px" : `${circleSize}px`,
+                  borderRadius: showReels ? "" : "50%",
+                  position: showReels ? "relative" : "",
+                  border: `2px solid ${circleColor}`,
                 }}
               >
-                {props?.showReels ? (
+                {showReels ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -278,7 +278,7 @@ const MyStories = (props) => {
                     padding: "2px",
                     width: "100%",
                     height: "100%",
-                    borderRadius: props?.showReels ? "" : "50%",
+                    borderRadius: showReels ? "" : "50%",
                   }}
                   loading="eager"
                 />

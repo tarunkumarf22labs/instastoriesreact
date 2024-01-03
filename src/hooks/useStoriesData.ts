@@ -1,5 +1,8 @@
+// @ts-nocheck
 import { useEffect, useState } from "react";
-import { getDataBasedOnPathname } from "../util/common";
+import axios from "axios";
+import { getResolvedData } from "../util/common";
+import { BASE_URL } from "../constants";
 
 const useStoriesData = (showReels) => {
   const [data, setData] = useState(null);
@@ -9,31 +12,34 @@ const useStoriesData = (showReels) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const requestOptions = {
-          method: "GET",
+        let url = `${BASE_URL}/api/stories`;
+        if (showReels) {
+          url = `${BASE_URL}/api/reels`;
+        }
+
+        const store = window?.Shopify;
+        const shop = store?.shop;
+        const access_token =
+          store?.accessToken || "shpua_048b6ab12e74a75eaf976d812d5d00ed";
+        const path = window?.location?.origin + window?.location?.pathname;
+
+        const queryParams = {
+          store_id: `offline_${shop}`,
+          access_token,
+          path: path,
         };
 
-        const shop = window.Shopify?.shop?.split(".")[0] || "ambra-maddalena";
-        const response = await fetch(
-          `https://s3.f22labs.cloud/shopclips/${shop}${
-            showReels ? "-reels" : ""
-          }.json`,
-          requestOptions
-        );
+        const urlWithParams = new URL(url);
+        urlWithParams.search = new URLSearchParams(queryParams).toString();
 
-        if (!response.ok) {
+        const response = await axios.get(urlWithParams.toString());
+
+        if (!response.status === 200) {
           throw new Error(`Error fetching data: ${response.status}`);
         }
 
-        const res = await response.json();
-        const resolvedData = {
-          properties: res?.properties,
-          stories: getDataBasedOnPathname(
-            window.location.pathname,
-            res?.data
-          ),
-        };
-
+        const data = response.data;
+        const resolvedData = getResolvedData(data);
         setData(resolvedData);
       } catch (error) {
         setError(error.message);

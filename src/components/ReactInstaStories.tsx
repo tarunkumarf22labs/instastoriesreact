@@ -20,6 +20,7 @@ const generateStories = (
   stories: Story[],
   renderers: { renderer: Renderer; tester: Tester }[]
 ) => {
+  console.log('generateStories',{stories})
   return stories?.map((s) => {
     let story: Story = {};
 
