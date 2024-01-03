@@ -6,7 +6,7 @@ export const getRenderer = (story: Story, renderers: { renderer: Renderer, teste
             ...r,
             testerResult: r.tester(story)
         }
-    }).filter(r => r.testerResult.condition);
+    })?.filter(r => r.testerResult.condition);
     probable.sort((a, b) => b.testerResult.priority - a.testerResult.priority);
     return probable[0].renderer;
 }

@@ -57,8 +57,8 @@ export const usePreLoader = (contents: Story[], cursor: number, preloadCount: nu
 		const end = cursor + preloadCount + 1;
 
 		const toPreload = contents
-			.slice(start, end)
-			.filter(shouldPreload);
+			?.slice(start, end)
+			?.filter(shouldPreload);
 
 		markUrlsLoaded(toPreload)
 		cacheContent(toPreload)
