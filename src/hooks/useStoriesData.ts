@@ -19,13 +19,10 @@ const useStoriesData = (showReels) => {
 
         const store = window?.Shopify;
         const shop = store?.shop;
-        const access_token =
-          store?.accessToken || "shpua_048b6ab12e74a75eaf976d812d5d00ed";
         const path = window?.location?.origin + window?.location?.pathname;
 
         const queryParams = {
           store_id: `offline_${shop}`,
-          access_token,
           path: path,
         };
 
