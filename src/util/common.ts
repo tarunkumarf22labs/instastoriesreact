@@ -70,6 +70,6 @@ export const handledata = ({ product }) => ({
 });
 
 export const getHeader = (storiesData) => ({
-  profileImage: storiesData?.image,
-  heading: storiesData?.name,
+  profileImage: storiesData?.thumbnail,
+  heading: storiesData?.story_name,
 });
