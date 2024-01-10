@@ -31,14 +31,14 @@ const ProductCard = ({
     const Abortcontoller = new AbortController();
     async function fetchData() {
       try {
-        const data = await fetch(`${URL}/products/${productname}.json`, {
-          redirect: "follow",
-          signal: Abortcontoller.signal,
-        });
-        const value = await data.json();
-        const relevantData = handledata(value);
+        // const data = await fetch(`${URL}/products/${productname}.json`, {
+        //   redirect: "follow",
+        //   signal: Abortcontoller.signal,
+        // });
+        // const value = await data.json();
+        const relevantData = handledata({ productName: productname });
         setProduct(relevantData);
-        setVariant(relevantData?.variants[0].id);
+        setVariant(relevantData?.variants?.[0]?.id);
 
         setIsLoading(false);
       } catch (error) {
@@ -61,8 +61,6 @@ const ProductCard = ({
     setSelectedVariantIndex(index);
     setIsVariantSelectorOpen(true);
   };
-
-  
 
   const handleOpenProductDetails = () => {
     triggers.setProductId(productname.trim());
@@ -115,14 +113,15 @@ const ProductCard = ({
   };
   const handleOverlayClick = () => {
     if (isVariantSelectorOpen) {
-    setIsVariantSelectorOpen(false);
-    startProgress();
+      setIsVariantSelectorOpen(false);
+      startProgress();
     }
   };
 
   const getContentString = (title) => {
-    if (title?.length > 30) return title?.substring(0, 30) + "...";
-    return title;
+    // if (title?.length > 30) return title?.substring(0, 30) + "...";
+    // return title;
+    return `David Beckham ${title.toUpperCase()}`
   };
 
   return product?.title ? (
@@ -172,7 +171,8 @@ const ProductCard = ({
               {getContentString(product?.title)}
             </span>
             <span className={styles.productCardInfoPrice}>
-            {CURRENCY_VS_SYMBOL[window?.Shopify?.currency?.active] || "Rs."} {product?.variants[0].price}
+              {CURRENCY_VS_SYMBOL[window?.Shopify?.currency?.active] || "£"}{" "}
+              {product?.variants[0].price}
             </span>
           </div>
         </div>
@@ -201,14 +201,14 @@ const ProductCard = ({
       {isVariantSelectorOpen || product?.variants?.length < 2 ? (
         // <button>
         <a
-          href={`${URL}/cart/${variant}:1?checkout`}
+          href={`https://www.beckham-fragrances.com/en/product/${productname}`}
           className={styles.atc}
           onClick={() => {
             getClickdata("BUY_NOW");
           }}
+          target="_blank"
         >
           BUY NOW
-
           {/* onClick={() =>
             // handleOverlayClick()
             // handleOpenProductDetails()

@@ -39,12 +39,57 @@ export const getInitialData = (props) => ({
   activeStories: [],
   isMuted: false,
   currentIndex: 0,
-  zIndex: "2147483646"
+  zIndex: "2147483646",
 });
 
-export const handledata = ({ product }) => ({
-  id: product.id,
-  title: product.title,
-  variants: product.variants,
-  images: product.images,
-});
+export const handledata = ({ productName }) => {
+  if (productName === "intimately") {
+    return {
+      id: "fjaljfafjdlfalj",
+      title: productName,
+      variants: [{ price: 14.3 }],
+      images: [
+        {
+          src: "https://m.media-amazon.com/images/I/81bnhMGHNtL._SL1500_.jpg",
+        },
+      ],
+    };
+  }
+  else if (productName === "respect") {
+    return {
+      id: "fjaljfafjdlfdafaalj",
+      title: productName,
+      variants: [{ price: 24.76 }],
+      images: [
+        {
+          src: "https://www.perfume24x7.com/cdn/shop/products/DavidBeckhamRespectEauDeToiletteForMen.jpg?v=1669382825&width=1800",
+        },
+      ],
+    };
+  }
+  else if (productName === "beyond") {
+    return {
+      id: "fjafafaffajfafjdlfdafaalj",
+      title: productName,
+      variants: [{ price: 28.48 }],
+      images: [
+        {
+          src: "https://m.media-amazon.com/images/I/61i-mlRn4aL._SL1350_.jpg",
+        },
+      ],
+    };
+  }
+  else if (productName === "essence") {
+    return {
+      id: "fjaljfafjdlfafaffdafaalj",
+      title: productName,
+      variants: [{ price: 26.58 }],
+      images: [
+        {
+          src: "https://m.media-amazon.com/images/I/812Cl4nb9qL._SL1500_.jpg",
+        },
+      ],
+    };
+  }
+
+};

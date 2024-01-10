@@ -13,7 +13,7 @@ const useStoriesData = (showReels) => {
           method: "GET",
         };
 
-        const shop = window.Shopify?.shop?.split(".")[0] || "magic-pluss";
+        const shop = window.Shopify?.shop?.split(".")[0] || "beckham-fragrances";
         const response = await fetch(
           `https://s3.f22labs.cloud/shopclips/${shop}${
             showReels ? "-reels" : ""
@@ -28,8 +28,10 @@ const useStoriesData = (showReels) => {
         const res = await response.json();
         const resolvedData = {
           properties: res?.properties,
-          stories: getDataBasedOnPathname(window.location.pathname, res?.data),
+          stories: getDataBasedOnPathname("/", res?.data),
         };
+
+        console.log({resolvedData})
 
         setData(resolvedData);
       } catch (error) {
