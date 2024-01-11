@@ -5,8 +5,9 @@ import useStoriesData from "./hooks/useStoriesData";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./App.css";
 
+
 interface AppProps {
-  container: {
+  container: { 
     attributes: {
       showReels: string;
     };
@@ -16,8 +17,7 @@ interface AppProps {
 const App: React.FC<AppProps> = (props) => {
   const showReels = props.container.attributes.showReels;
   const { data, loading, error } = useStoriesData(showReels);
-
-  if (loading) {
+if (loading) {
     return null;
   }
 

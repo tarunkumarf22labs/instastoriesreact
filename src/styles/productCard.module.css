@@ -14,8 +14,8 @@
 .productCard {
   border-radius: 10px;
   width: 100%;
-  max-width: 206px !important;
-  min-width: 206px !important;
+  max-width: 300px !important;
+  min-width: 300px !important;
   height: auto;
   display: flex;
   justify-content: flex-end;

@@ -27,6 +27,8 @@ function StoryDrawer({
   const [textforCart, setTextforCart] = useState("ADD TO CART");
   const { onCloseClick } = useContext<GlobalCtx>(GlobalContext);
 
+ 
+
   useEffect(() => {
     const Abortcontoller = new AbortController();
     if (!productname) return;
@@ -98,7 +100,7 @@ function StoryDrawer({
 
             // If count is greater than zero, display the count
             if (cart.item_count > 0) {
-              cartCountElement.style.display = "block"; // Show the count element
+              cartCountElement.style.display = "flex"; // Show the count element
               cartCountElement.textContent = cart.item_count.toString(); // Set the count value
             }
             setTextforCart("ADD TO CART");
@@ -113,6 +115,7 @@ function StoryDrawer({
       .catch((error) => {
         console.error("Error:", error);
       });
+    
   };
 
   return (
